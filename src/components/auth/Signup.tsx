@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Signup: React.FC = () => {
-    const [username, setUsername] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -14,8 +15,9 @@ const Signup: React.FC = () => {
         setSuccess("");
 
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/signup", {
-                username,
+            const response = await axios.post("http://localhost:9193/api/v1/auth/signup", {
+                firstname,
+                lastname,
                 email,
                 password,
             });
@@ -33,11 +35,21 @@ const Signup: React.FC = () => {
             {success && <p style={{ color: "green" }}>{success}</p>}
 
             <div>
-                <label>Username: </label>
+                <label>Firstname: </label>
                 <input
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
+                    required
+                />
+            </div>
+
+            <div>
+                <label>Lastname: </label>
+                <input
+                    type="text"
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
                     required
                 />
             </div>
