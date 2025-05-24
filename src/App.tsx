@@ -1,24 +1,30 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { Suspense} from "react";
+import {Navigate, Route, Routes} from "react-router-dom";
+import AuthRoutes from "./routes/AuthRoutes.tsx";
+import PublicRoutes from "./routes/PublicRoutes";
+import PrivateRoutes from "./routes/PrivateRoutes";
+import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import Navbar from "./components/Navbar.tsx";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import Home from "./pages/Home";
-import { useAuth } from "./components/auth/AuthContext";
+
 
 const App: React.FC = () => {
-    const {isAuthenticated} = useAuth();
-
     return (
-        <>
-            <Navbar/>
-            <Routes>
-                <Route path="/" element={isAuthenticated ? <Home/> : <Navigate to="/login"/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/signup" element={<Signup/>}/>
-            </Routes>
-        </>
+            <>
+                <Navbar />
+                <ErrorBoundary fallback={<div>Oops! Something went wrong.</div>}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Routes>
+                            {AuthRoutes()}
+                            {PublicRoutes()}
+                            {PrivateRoutes()}
+                            {/* Redirect root '/' to '/login' */}
+                            <Route path="/" element={<Navigate to="/login" replace />} />
+                            {/* Catch-all redirects to '/login' */}
+                            <Route path="*" element={<Navigate to="/login" replace />} />
+                        </Routes>
+                    </Suspense>
+                </ErrorBoundary>
+            </>
     );
-}
-
+};
 export default App;
