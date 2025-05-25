@@ -17,6 +17,11 @@ const Profile: React.FC = () => {
 
     const handleSave = async () => {
         try {
+            if (!user || !user.id) {
+                console.error("User ID is undefined");
+                console.log("Logging in user:", user);
+                return;
+            }
             const updatedUser = await userService.updateUser(formData.id, formData);
             localStorage.setItem("user", JSON.stringify(updatedUser));
             setMessage("Profile updated successfully.");

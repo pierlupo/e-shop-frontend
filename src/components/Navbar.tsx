@@ -30,9 +30,10 @@ const Navbar: React.FC = () => {
                 )}
                 {isAuthenticated ? (
                     <>
+                        <Link to="/profile" className="text-gray-700 hover:underline">Profile</Link>
                         <Link to="/home" className="text-gray-700 hover:underline">Home</Link>
                         <Link to="/dashboard" className="text-gray-700 hover:underline">Dashboard</Link>
-                        <button onClick={handleLogout} className="text-red-600 hover:underline">Logout</button>
+                        <button onClick={handleLogout} className="ml-auto px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Logout</button>
                     </>
                 ) : (
                     <>
