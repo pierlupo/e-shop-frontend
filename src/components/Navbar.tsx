@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 const Navbar: React.FC = () => {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, user  } = useAuth(); // assuming user has a 'firstname'
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -21,6 +22,12 @@ const Navbar: React.FC = () => {
 
             {/* Right: Navigation Links */}
             <div className="flex items-center space-x-4">
+                {isAuthenticated && user && (
+                    <div className="flex items-center space-x-2 text-gray-700">
+                        <UserIcon className="w-5 h-5" />
+                        <span className="hidden sm:inline">Welcome, {user.firstname}!</span>
+                    </div>
+                )}
                 {isAuthenticated ? (
                     <>
                         <Link to="/home" className="text-gray-700 hover:underline">Home</Link>
