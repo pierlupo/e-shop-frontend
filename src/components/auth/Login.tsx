@@ -40,7 +40,7 @@ const Login: React.FC = () => {
             {/* Email */}
             <div className="mb-4">
                 <label htmlFor="email" className="block mb-1 font-medium">
-                    Email:
+                    Email
                 </label>
                 <div className="relative">
                     <EnvelopeIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
@@ -58,11 +58,10 @@ const Login: React.FC = () => {
             {/* Password */}
             <div className="mb-6">
                 <label className="block mb-1 font-medium" htmlFor="password">
-                    Password:
+                    Password
                 </label>
                 <div className="relative">
-                    <LockClosedIcon
-                        className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
+                    <LockClosedIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
                     <input
                         id="password"
                         type="password"

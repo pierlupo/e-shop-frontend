@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { useAuth } from "../components/auth/AuthContext";
 import { userService } from "../services/UserService";
 import type { User } from "../interfaces/User";
+import { PencilSquareIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
 const Profile: React.FC = () => {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const [formData, setFormData] = useState<User | null>(user);
     const [isEditing, setIsEditing] = useState(false);
     const [message, setMessage] = useState("");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordMessage, setPasswordMessage] = useState("");
 
     if (!user || !formData) return <div>Loading...</div>;
 
@@ -38,7 +43,7 @@ const Profile: React.FC = () => {
 
             <div className="space-y-4">
                 <div>
-                    <label className="block font-semibold">First Name</label>
+                    <label className="block font-semibold">Firstname</label>
                     <input
                         type="text"
                         name="firstname"
@@ -50,7 +55,7 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div>
-                    <label className="block font-semibold">Last Name</label>
+                    <label className="block font-semibold">Lastname</label>
                     <input
                         type="text"
                         name="lastname"
@@ -101,18 +106,77 @@ const Profile: React.FC = () => {
                 ) : (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                        className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                     >
+                        <PencilSquareIcon className="w-5 h-5 text-white" />
                         Edit Profile
                     </button>
                 )}
+            </div>
+            <div className="mt-10 border-t pt-6">
+                <h2 className="text-2xl font-bold mb-4">Change Password</h2>
+                <div className="space-y-4">
+                    <div>
+                        <label className="block font-semibold">Current Password</label>
+                        <input
+                            type="password"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            className="w-full p-2 border rounded"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">New Password</label>
+                        <input
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="w-full p-2 border rounded"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block font-semibold">Confirm New Password</label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full p-2 border rounded"
+                        />
+                    </div>
+                </div>
 
                 <button
-                    onClick={logout}
-                    className="ml-auto px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                    onClick={async () => {
+                        if (newPassword !== confirmPassword) {
+                            setPasswordMessage("Passwords do not match.");
+                            return;
+                        }
+
+                        try {
+                            await userService.changePassword(user!.id, {
+                                currentPassword,
+                                newPassword,
+                            });
+                            setPasswordMessage("Password updated successfully.");
+                            setCurrentPassword("");
+                            setNewPassword("");
+                            setConfirmPassword("");
+                        } catch (err) {
+                            console.error(err);
+                            setPasswordMessage("Failed to update password.");
+                        }
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
                 >
-                    Logout
+                    <LockClosedIcon className="w-5 h-5 text-white"/>
+                    Change Password
                 </button>
+
+                {passwordMessage && (
+                    <p className="mt-2 text-sm text-blue-600">{passwordMessage}</p>
+                )}
             </div>
         </div>
     );

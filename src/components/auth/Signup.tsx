@@ -45,7 +45,7 @@ const Signup: React.FC = () => {
             {/* Firstname */}
             <div className="mb-4">
                 <label htmlFor="firstname" className="block mb-1 font-medium">
-                    Firstname:
+                    Firstname
                 </label>
                 <div className="relative">
                     <UserIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
@@ -63,7 +63,7 @@ const Signup: React.FC = () => {
             {/* Lastname */}
             <div className="mb-4">
                 <label htmlFor="lastname" className="block mb-1 font-medium">
-                    Lastname:
+                    Lastname
                 </label>
                 <div className="relative">
                     <UserCircleIcon
@@ -82,7 +82,7 @@ const Signup: React.FC = () => {
             {/* Email */}
             <div className="mb-4">
                 <label htmlFor="email" className="block mb-1 font-medium">
-                    Email:
+                    Email
                 </label>
                 <div className="relative">
                     <EnvelopeIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
@@ -100,7 +100,7 @@ const Signup: React.FC = () => {
             {/* Password */}
             <div className="mb-6">
                 <label htmlFor="password" className="block mb-1 font-medium">
-                    Password:
+                    Password
                 </label>
                 <div className="relative">
                     <LockClosedIcon

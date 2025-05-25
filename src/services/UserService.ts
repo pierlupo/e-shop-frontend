@@ -20,4 +20,8 @@ export const userService = {
     deleteUser: async (userId: number): Promise<void> => {
         await axios.delete(`${API_URL}/${userId}/delete`);
     },
+
+    changePassword: async (id: number, data: { currentPassword: string; newPassword: string }) => {
+        return axios.put(`${API_URL}/users/${id}/password`, data);
+    }
 };
