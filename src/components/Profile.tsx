@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Loader from "../components/Loader.tsx";
 import { useAuth } from "../components/auth/AuthContext";
 import { userService } from "../services/UserService";
 import type { User } from "../interfaces/User";
 import { PencilSquareIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import ConfirmationDialog from "./ConfirmationDialog";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const getFullAvatarUrl = (avatarUrl: string | null | undefined): string | null => {
+    if (!avatarUrl) return null;
+    if (avatarUrl.startsWith("http")) return avatarUrl;
+    return `${BASE_URL}${avatarUrl}`;
+};
 
 const Profile: React.FC = () => {
     const { user } = useAuth();
@@ -18,8 +26,14 @@ const Profile: React.FC = () => {
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
     const [dialogContext, setDialogContext] = useState<"save" | "password" | null>(null);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [avatarPreview, setAvatarPreview] = useState<string | null>(formData?.avatarUrl || null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(getFullAvatarUrl(formData?.avatarUrl));
+    const [avatarError, setAvatarError] = useState(false);
 
+    useEffect(() => {
+        if (formData?.avatarUrl) {
+            setAvatarPreview(getFullAvatarUrl(formData.avatarUrl));
+        }
+    }, [formData?.avatarUrl]);
 
     if (!user || !formData) return <Loader />;
 
@@ -31,6 +45,7 @@ const Profile: React.FC = () => {
         try {
             if (!user || !user.id) return;
             let updatedAvatarUrl = formData.avatarUrl;
+            console.log("UPDATED AVATAR URL : ", updatedAvatarUrl)
             if (avatarFile) {
                 updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
             }
@@ -40,7 +55,7 @@ const Profile: React.FC = () => {
             });
             localStorage.setItem("user", JSON.stringify(updatedUser));
             setFormData(updatedUser);
-            setAvatarPreview(updatedUser.avatarUrl);
+            setAvatarPreview(getFullAvatarUrl(updatedUser.avatarUrl));
             setAvatarFile(null);
             setMessage("Profile updated successfully.");
             setIsEditing(false);
@@ -98,7 +113,10 @@ const Profile: React.FC = () => {
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
                         {avatarPreview ? (
-                            <img src={avatarPreview} alt="User Avatar" className="object-cover w-full h-full" />
+                            <img src={avatarError ? "/default-avatar.png" : avatarPreview || "/default-avatar.png"}
+                                 alt="User Avatar"
+                                 className="object-cover w-full h-full"
+                                 onError={() => setAvatarError(true)} />
                         ) : (
                             <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
                                 No Avatar

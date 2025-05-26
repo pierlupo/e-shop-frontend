@@ -25,12 +25,20 @@ const Navbar: React.FC = () => {
             {/* Right: Navigation Links */}
             <div className="flex items-center space-x-4">
                 {isAuthenticated && user && (
-                    <Link to="/profile" className="relative group flex items-center space-x-1 text-gray-700">
-                        <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
+                    <Link to="/profile" className="relative group flex items-center space-x-2 text-gray-700">
+                        {user.avatarUrl ? (
+                            <img
+                                src={`${import.meta.env.VITE_API_BASE_URL}${user.avatarUrl}`}
+                                alt="User Avatar"
+                                className="w-8 h-8 rounded-full border border-gray-300 shadow-sm object-cover hover:ring-2 hover:ring-gray-500 transition"
+                            />
+                        ) : (
+                            <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
+                        )}
                         <span className="hidden sm:inline">Welcome {user.firstname} !</span>
                         <span className="absolute -bottom-8 left-[-2rem] transform -translate-x-1/2 scale-0 group-hover:scale-100 bg-black text-white text-xs px-2 py-1 rounded shadow transition-transform duration-200">
-                    Edit your profile
-                </span>
+            Edit your profile
+        </span>
                     </Link>
                 )}
                 {isAuthenticated ? (
