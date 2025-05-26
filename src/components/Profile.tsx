@@ -4,6 +4,7 @@ import { useAuth } from "../components/auth/AuthContext";
 import { userService } from "../services/UserService";
 import type { User } from "../interfaces/User";
 import { PencilSquareIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const Profile: React.FC = () => {
     const { user } = useAuth();
@@ -14,6 +15,8 @@ const Profile: React.FC = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
+    const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+    const [dialogContext, setDialogContext] = useState<"save" | "password" | null>(null);
 
     if (!user || !formData) return <Loader />;
 
@@ -37,6 +40,39 @@ const Profile: React.FC = () => {
             setMessage("Failed to update profile.");
         }
     };
+
+    const handleConfirm = async () => {
+        if (dialogContext === "save") {
+            await handleSave();
+        } else if (dialogContext === "password") {
+            if (newPassword !== confirmPassword) {
+                setPasswordMessage("Passwords do not match.");
+                return;
+            }
+
+            try {
+                await userService.changePassword(user!.id, {
+                    currentPassword,
+                    newPassword,
+                });
+                setPasswordMessage("Password updated successfully.");
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
+            } catch (err) {
+                console.error(err);
+                setPasswordMessage("Failed to update password.");
+            }
+        }
+        setIsConfirmDialogOpen(false);
+        setDialogContext(null);
+    };
+
+    const handleCancel = () => {
+        setIsConfirmDialogOpen(false);
+        setDialogContext(null);
+    };
+
 
     return (
         <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
@@ -88,7 +124,10 @@ const Profile: React.FC = () => {
                 {isEditing ? (
                     <>
                         <button
-                            onClick={handleSave}
+                            onClick={() => {
+                                setDialogContext("save");
+                                setIsConfirmDialogOpen(true);
+                            }}
                             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
                             Save Changes
@@ -149,25 +188,9 @@ const Profile: React.FC = () => {
                 </div>
 
                 <button
-                    onClick={async () => {
-                        if (newPassword !== confirmPassword) {
-                            setPasswordMessage("Passwords do not match.");
-                            return;
-                        }
-
-                        try {
-                            await userService.changePassword(user!.id, {
-                                currentPassword,
-                                newPassword,
-                            });
-                            setPasswordMessage("Password updated successfully.");
-                            setCurrentPassword("");
-                            setNewPassword("");
-                            setConfirmPassword("");
-                        } catch (err) {
-                            console.error(err);
-                            setPasswordMessage("Failed to update password.");
-                        }
+                    onClick={() => {
+                        setDialogContext("password");
+                        setIsConfirmDialogOpen(true);
                     }}
                     className="flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
                 >
@@ -179,6 +202,17 @@ const Profile: React.FC = () => {
                     <p className="mt-2 text-sm text-blue-600">{passwordMessage}</p>
                 )}
             </div>
+            <ConfirmationDialog
+                isOpen={isConfirmDialogOpen}
+                title={dialogContext === "save" ? "Confirm and save change(s) ?" : "Confirm and save your new password ?"}
+                message={
+                    dialogContext === "save"
+                        ? "Are you sure you want to save the change(s) to your profile ?"
+                        : "Are you sure you want to change your password ?"
+                }
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </div>
     );
 };

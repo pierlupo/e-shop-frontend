@@ -1,18 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "./auth/AuthContext";
 import {UserIcon} from "@heroicons/react/24/solid";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const Navbar: React.FC = () => {
-    const {isAuthenticated, logout, user} = useAuth(); // assuming user has a 'firstname'
+    const {isAuthenticated, logout, user} = useAuth();
     const navigate = useNavigate();
-
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const handleLogout = () => {
         logout();
         navigate("/login");
     };
 
     return (
+        <>
         <nav className="flex items-center justify-between px-6 py-4 bg-gray-100 shadow">
             {/* Left: Logo + Title */}
             <Link to="/" className="flex items-center space-x-2">
@@ -36,7 +38,7 @@ const Navbar: React.FC = () => {
                         <Link to="/home" className="text-gray-700 hover:underline">Home</Link>
                         <Link to="/dashboard" className="text-gray-700 hover:underline">Dashboard</Link>
                         <button
-                            onClick={handleLogout}
+                            onClick={() => setShowLogoutConfirm(true)}
                             className="ml-auto px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                         >
                             Logout
@@ -51,6 +53,18 @@ const Navbar: React.FC = () => {
                 )}
             </div>
         </nav>
+            {/* Modal to confirm logout */}
+            <ConfirmationDialog
+                isOpen={showLogoutConfirm}
+                title="Confirm Logout"
+                message="Are you sure you want to log out ?"
+                onConfirm={() => {
+                    setShowLogoutConfirm(false);
+                    handleLogout();
+                }}
+                onCancel={() => setShowLogoutConfirm(false)}
+            />
+        </>
     );
 };
 

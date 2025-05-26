@@ -1,5 +1,5 @@
 import React, { Suspense} from "react";
-import {Toaster} from "react-hot-toast";
+import CustomToaster from "./components/CustomToaster";
 import {Navigate, Route, Routes} from "react-router-dom";
 import AuthRoutes from "./routes/AuthRoutes.tsx";
 import PublicRoutes from "./routes/PublicRoutes";
@@ -13,8 +13,8 @@ const App: React.FC = () => {
     return (
             <>
                 <Navbar />
-                <Toaster position="top-right" reverseOrder={false} />
-                <ErrorBoundary fallback={<div>Oops! Something went wrong.</div>}>
+                <CustomToaster />
+                <ErrorBoundary fallback={<div>Something went wrong...! :/</div>}>
                     <Suspense fallback={<Loader />}>
                         <Routes>
                             {AuthRoutes()}

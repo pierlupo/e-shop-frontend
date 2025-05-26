@@ -1,6 +1,9 @@
+import type {User} from "./User.ts";
+
 export interface LoginResponse {
     message: string;
     data: {
+        user: User;
         userId: number;
         token: string;
     };

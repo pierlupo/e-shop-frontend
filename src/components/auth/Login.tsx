@@ -22,8 +22,7 @@ const Login: React.FC = () => {
             const user = response.data.user;
             const token = response.data.token;
             login(token, user);
-
-            toast.success(`Welcome back, ${user.firstname || "user"}!`);
+            toast.success(`Welcome back ${user.firstname || "user"}! 🎉`);
             navigate("/home");
         } catch (err: any) {
             const message = err.response?.data?.message || "Login failed";

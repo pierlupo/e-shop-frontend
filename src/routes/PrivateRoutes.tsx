@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import { lazy } from "react";
 import { Route } from "react-router-dom";
 import Profile from "../components/Profile.tsx";
 import Home from "../components/Home.tsx";

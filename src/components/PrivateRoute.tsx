@@ -3,10 +3,10 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "./auth/AuthContext";
 
 interface PrivateRouteProps {
-    children: React.ReactElement; // React.ReactElement is more idiomatic than JSX.Element here
+    children: React.ReactElement;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
     const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
