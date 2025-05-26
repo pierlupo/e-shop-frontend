@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Loader from "../components/Loader.tsx";
 import { useAuth } from "../components/auth/AuthContext";
 import { userService } from "../services/UserService";
 import type { User } from "../interfaces/User";
@@ -14,7 +15,7 @@ const Profile: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
 
-    if (!user || !formData) return <div>Loading...</div>;
+    if (!user || !formData) return <Loader />;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

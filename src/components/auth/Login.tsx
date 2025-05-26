@@ -3,6 +3,8 @@ import {login as loginService} from "../../services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../components/auth/AuthContext";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
+
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -13,19 +15,22 @@ const Login: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError("");
+        setError(""); // still clear state in case it's used elsewhere
 
         try {
-            const response = await loginService({email, password});
+            const response = await loginService({ email, password });
             const user = response.data.user;
             const token = response.data.token;
             login(token, user);
+
+            toast.success(`Welcome back, ${user.firstname || "user"}!`);
             navigate("/home");
         } catch (err: any) {
-            setError(err.response?.data?.message || "Login failed");
+            const message = err.response?.data?.message || "Login failed";
+            toast.error(message);
+            setError(message); // optional, can be removed if you no longer want to show the <p> error message
         }
     };
-
 
     return (
         <form

@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {signup as signupService} from "../../services/AuthService";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
     EnvelopeIcon,
     LockClosedIcon,
     UserIcon,
     UserCircleIcon
 } from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
 
 const Signup: React.FC = () => {
     const [firstname, setFirstname] = useState("");
@@ -15,6 +16,8 @@ const Signup: React.FC = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,10 +25,14 @@ const Signup: React.FC = () => {
         setSuccess("");
 
         try {
-            await signupService({firstname, lastname, email, password});
-            setSuccess("Signup successful! You can now log in.");
+            await signupService({ firstname, lastname, email, password });
+            toast.success("Signup successful! You can now log in.");
+            navigate("/login");
+            setSuccess(""); // not needed anymore unless you want to redirect
         } catch (err: any) {
-            setError(err.response?.data?.message || "Signup failed");
+            const message = err.response?.data?.message || "Signup failed";
+            toast.error(message);
+            setError(message); // optional if you're removing inline error display
         }
     };
 
