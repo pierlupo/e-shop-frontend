@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
                 {isAuthenticated && user && (
                     <Link to="/profile" className="relative group flex items-center space-x-1 text-gray-700">
                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
-                        <span className="hidden sm:inline">Welcome, {user.firstname}!</span>
+                        <span className="hidden sm:inline">Welcome {user.firstname} !</span>
                         <span className="absolute -bottom-8 left-[-2rem] transform -translate-x-1/2 scale-0 group-hover:scale-100 bg-black text-white text-xs px-2 py-1 rounded shadow transition-transform duration-200">
                     Edit your profile
                 </span>

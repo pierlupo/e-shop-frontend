@@ -22,6 +22,17 @@ export const userService = {
     },
 
     changePassword: async (id: number, data: { currentPassword: string; newPassword: string }) => {
-        return axios.put(`${API_URL}/users/${id}/password`, data);
+        const response = await axios.put(`${API_URL}/users/${id}/password`, data);
+        return response.data.data;
+    },
+
+    uploadAvatar: async (userId: number, file: File): Promise<string> => {
+        const formData = new FormData();
+        formData.append("avatar", file);
+        const response = await axios.post(
+            `${API_URL}/${userId}/avatar`, formData
+        );
+        return response.data.data.avatarUrl;
     }
+
 };

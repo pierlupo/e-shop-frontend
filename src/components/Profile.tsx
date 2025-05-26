@@ -17,6 +17,9 @@ const Profile: React.FC = () => {
     const [passwordMessage, setPasswordMessage] = useState("");
     const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
     const [dialogContext, setDialogContext] = useState<"save" | "password" | null>(null);
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(formData?.avatarUrl || null);
+
 
     if (!user || !formData) return <Loader />;
 
@@ -26,13 +29,19 @@ const Profile: React.FC = () => {
 
     const handleSave = async () => {
         try {
-            if (!user || !user.id) {
-                console.error("User ID is undefined");
-                console.log("Logging in user:", user);
-                return;
+            if (!user || !user.id) return;
+            let updatedAvatarUrl = formData.avatarUrl;
+            if (avatarFile) {
+                updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
             }
-            const updatedUser = await userService.updateUser(formData.id, formData);
+            const updatedUser = await userService.updateUser(user.id, {
+                ...formData,
+                avatarUrl: updatedAvatarUrl,
+            });
             localStorage.setItem("user", JSON.stringify(updatedUser));
+            setFormData(updatedUser);
+            setAvatarPreview(updatedUser.avatarUrl);
+            setAvatarFile(null);
             setMessage("Profile updated successfully.");
             setIsEditing(false);
         } catch (error) {
@@ -73,12 +82,45 @@ const Profile: React.FC = () => {
         setDialogContext(null);
     };
 
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setAvatarFile(file);
+            setAvatarPreview(URL.createObjectURL(file));
+        }
+    };
 
     return (
         <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
             <h2 className="text-2xl font-bold mb-4">My Profile</h2>
 
             <div className="space-y-4">
+                <div className="mb-6 flex items-center space-x-4">
+                    <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
+                        {avatarPreview ? (
+                            <img src={avatarPreview} alt="User Avatar" className="object-cover w-full h-full" />
+                        ) : (
+                            <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
+                                No Avatar
+                            </div>
+                        )}
+                    </div>
+                    {isEditing && (
+                        <label
+                            htmlFor="avatarUpload"
+                            className="cursor-pointer px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                            Upload Avatar
+                            <input
+                                id="avatarUpload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleAvatarChange}
+                                className="hidden"
+                            />
+                        </label>
+                    )}
+                </div>
                 <div>
                     <label className="block font-semibold">Firstname</label>
                     <input
