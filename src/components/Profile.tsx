@@ -47,7 +47,6 @@ const Profile: React.FC = () => {
             let updatedAvatarUrl:string|null = formData.avatarUrl;
             if (avatarFile) {
                 updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
-                console.log("UPDATED AVATAR URL : ", updatedAvatarUrl)
             }
             const updatedUser:User = await userService.updateUser(user.id, {
                 ...formData,

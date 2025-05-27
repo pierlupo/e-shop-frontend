@@ -32,7 +32,6 @@ export const userService = {
         const response = await axios.post(
             `${API_URL}/${userId}/avatar`, formData
         );
-        console.log("UPLOAD RESPONSE FULL:", response.data);
         return response.data.data;
     }
 
