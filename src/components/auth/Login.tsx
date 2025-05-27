@@ -34,16 +34,14 @@ const Login: React.FC = () => {
 
     return (
         <LayoutWrapper>
-        <form
-            onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
             <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-
             {error && (
                 <p className="mb-4 text-red-600 text-center font-semibold">{error}</p>
             )}
+            <div className="flex flex-col items-center">
             {/* Email */}
-            <div className="mb-4">
+            <div className="mb-4 w-80">
                 <label htmlFor="email" className="block mb-1 font-medium">
                     Email
                 </label>
@@ -61,7 +59,7 @@ const Login: React.FC = () => {
                 </div>
             </div>
             {/* Password */}
-            <div className="mb-6">
+            <div className="mb-6 w-80">
                 <label className="block mb-1 font-medium" htmlFor="password">
                     Password
                 </label>
@@ -80,7 +78,7 @@ const Login: React.FC = () => {
             </div>
             <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4"
+                className="w-80 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4 mx-auto block"
             >
                 Login
             </button>
@@ -90,6 +88,7 @@ const Login: React.FC = () => {
                     Signup here
                 </Link>
             </p>
+            </div>
         </form>
             </LayoutWrapper>
     );

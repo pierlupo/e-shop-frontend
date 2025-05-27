@@ -24,13 +24,12 @@ const Signup: React.FC = () => {
         e.preventDefault();
         setError("");
         setSuccess("");
-
         try {
             await signupService({ firstname, lastname, email, password });
             toast.success("Signup successful! You can now log in.");
             navigate("/login");
             setSuccess(""); // not needed anymore unless you want to redirect
-        } catch (err: any) {
+        } catch (err:any) {
             const message = err.response?.data?.message || "Signup failed";
             toast.error(message);
             setError(message); // optional
@@ -39,19 +38,17 @@ const Signup: React.FC = () => {
 
     return (
         <LayoutWrapper>
-        <form
-            onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
             <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
-
             {error && (
                 <p className="mb-4 text-red-600 text-center font-semibold">{error}</p>
             )}
             {success && (
                 <p className="mb-4 text-green-600 text-center font-semibold">{success}</p>
             )}
+            <div className="flex flex-col items-center">
             {/* Firstname */}
-            <div className="mb-4">
+                <div className="mb-4 w-80">
                 <label htmlFor="firstname" className="block mb-1 font-medium">
                     Firstname
                 </label>
@@ -69,7 +66,7 @@ const Signup: React.FC = () => {
                 </div>
             </div>
             {/* Lastname */}
-            <div className="mb-4">
+            <div className="mb-4 w-80">
                 <label htmlFor="lastname" className="block mb-1 font-medium">
                     Lastname
                 </label>
@@ -88,7 +85,7 @@ const Signup: React.FC = () => {
                 </div>
             </div>
             {/* Email */}
-            <div className="mb-4">
+            <div className="mb-4 w-80">
                 <label htmlFor="email" className="block mb-1 font-medium">
                     Email
                 </label>
@@ -106,7 +103,7 @@ const Signup: React.FC = () => {
                 </div>
             </div>
             {/* Password */}
-            <div className="mb-6">
+            <div className="mb-6 w-80">
                 <label htmlFor="password" className="block mb-1 font-medium">
                     Password
                 </label>
@@ -126,8 +123,7 @@ const Signup: React.FC = () => {
             </div>
             <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4"
-            >
+                className="w-80 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4">
                 Signup
             </button>
             <p className="text-sm text-center">
@@ -136,6 +132,7 @@ const Signup: React.FC = () => {
                     Login here
                 </Link>
             </p>
+            </div>
         </form>
             </LayoutWrapper>
     );

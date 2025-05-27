@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
         <footer className="bg-gray-100 shadow py-6 mt-auto">
             <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 <div className="mb-4 md:mb-0">
-                    <span className="font-bold text-lg">E-Shop</span> © {new Date().getFullYear()} All rights reserved.
+                    <span className="font-bold text-lg text-gray-700">E-Shop</span><span className="text-gray-700"> © {new Date().getFullYear()} All rights reserved.</span>
                 </div>
                 <div className="flex space-x-4">
                     <Link to="/" className="flex items-center text-gray-700 hover:underline">

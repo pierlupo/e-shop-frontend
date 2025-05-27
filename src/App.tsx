@@ -1,4 +1,6 @@
 import React, { Suspense} from "react";
+// import Header from "./components/Header.tsx";
+import './App.css';
 import Footer from "./components/Footer.tsx";
 import CustomToaster from "./components/CustomToaster";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -15,6 +17,7 @@ const App: React.FC = () => {
             <>
                 <div className="flex flex-col min-h-screen">
                 <Navbar />
+                {/*<Header />*/}
                 <CustomToaster />
                 <ErrorBoundary fallback={<div>Something went wrong...! :/</div>}>
                     <Suspense fallback={<Loader />}>

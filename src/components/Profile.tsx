@@ -108,8 +108,8 @@ const Profile: React.FC = () => {
 
     return (
         <LayoutWrapper>
+            <div className="flex flex-col items-center">
             <h2 className="text-2xl font-bold mb-4">My Profile</h2>
-
             <div className="space-y-4">
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
                         value={formData.firstname}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-full p-2 border rounded"
+                        className="w-80 p-2 border rounded"
                     />
                 </div>
 
@@ -160,7 +160,7 @@ const Profile: React.FC = () => {
                         value={formData.lastname}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-full p-2 border rounded"
+                        className="w-80 p-2 border rounded"
                     />
                 </div>
 
@@ -172,15 +172,13 @@ const Profile: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-full p-2 border rounded"
+                        className="w-80 p-2 border rounded"
                     />
                 </div>
             </div>
-
             {message && (
                 <p className="mt-4 text-sm text-green-600">{message}</p>
             )}
-
             <div className="mt-6 flex space-x-4">
                 {isEditing ? (
                     <>
@@ -189,7 +187,7 @@ const Profile: React.FC = () => {
                                 setDialogContext("save");
                                 setIsConfirmDialogOpen(true);
                             }}
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
                             Save Changes
                         </button>
@@ -199,7 +197,7 @@ const Profile: React.FC = () => {
                                 setIsEditing(false);
                                 setMessage("");
                             }}
-                            className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                            className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
                         >
                             Cancel
                         </button>
@@ -207,7 +205,7 @@ const Profile: React.FC = () => {
                 ) : (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                        className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                     >
                         <PencilSquareIcon className="w-5 h-5 text-white" />
                         Edit Profile
@@ -223,45 +221,42 @@ const Profile: React.FC = () => {
                             type="password"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
-                            className="w-full p-2 border rounded"
+                            className="w-80 p-2 border rounded"
                         />
                     </div>
-
                     <div>
                         <label className="block font-semibold">New Password</label>
                         <input
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full p-2 border rounded"
+                            className="w-80 p-2 border rounded"
                         />
                     </div>
-
                     <div>
                         <label className="block font-semibold">Confirm New Password</label>
                         <input
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full p-2 border rounded"
+                            className="w-80 p-2 border rounded"
                         />
                     </div>
                 </div>
-
                 <button
                     onClick={() => {
                         setDialogContext("password");
                         setIsConfirmDialogOpen(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
+                    className="w-80 flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
                 >
                     <LockClosedIcon className="w-5 h-5 text-white"/>
                     Change Password
                 </button>
-
                 {passwordMessage && (
                     <p className="mt-2 text-sm text-blue-600">{passwordMessage}</p>
                 )}
+            </div>
             </div>
             <ConfirmationDialog
                 isOpen={isConfirmDialogOpen}
