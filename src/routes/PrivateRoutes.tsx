@@ -1,5 +1,5 @@
-import { lazy } from "react";
-import { Route } from "react-router-dom";
+import {lazy} from "react";
+import {Route} from "react-router-dom";
 import Profile from "../components/Profile.tsx";
 import Home from "../components/Home.tsx";
 import PrivateRoute from "../components/PrivateRoute";

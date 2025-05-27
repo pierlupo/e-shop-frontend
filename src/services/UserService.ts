@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { User } from "../interfaces/User";
+import type {User} from "../interfaces/User";
 
 const API_URL = import.meta.env.VITE_API_URL_USERS;
 
@@ -32,7 +32,8 @@ export const userService = {
         const response = await axios.post(
             `${API_URL}/${userId}/avatar`, formData
         );
-        return response.data.data.avatarUrl;
+        console.log("UPLOAD RESPONSE FULL:", response.data);
+        return response.data.data;
     }
 
 };

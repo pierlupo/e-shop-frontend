@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "./auth/AuthContext";
+import {useAuth} from "./auth/UseAuth";
 import {UserIcon} from "@heroicons/react/24/solid";
 import ConfirmationDialog from "./ConfirmationDialog";
 
@@ -21,7 +21,6 @@ const Navbar: React.FC = () => {
                 <img src="/favicon-cart.jpg" alt="Logo" className="w-8 h-8"/>
                 <span className="font-bold text-xl text-gray-800">E-Shop</span>
             </Link>
-
             {/* Right: Navigation Links */}
             <div className="flex items-center space-x-4">
                 {isAuthenticated && user && (

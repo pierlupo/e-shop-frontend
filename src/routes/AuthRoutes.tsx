@@ -1,5 +1,5 @@
-import React, { lazy } from "react";
-import { Route } from "react-router-dom";
+import React, {lazy} from "react";
+import {Route} from "react-router-dom";
 
 const Login = lazy(() => import("../components/auth/Login"));
 const Signup = lazy(() => import("../components/auth/Signup"));

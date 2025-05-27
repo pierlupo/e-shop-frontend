@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import App from "./App";
-import { AuthProvider } from "./components/auth/AuthContext";
+import {AuthProvider} from "./components/auth/AuthProvider";
 import '../index.css';
 
 // React.StrictMode helps highlight potential problems in your app during development.

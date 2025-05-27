@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {login as loginService} from "../../services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../components/auth/AuthContext";
+import {useAuth} from "../../components/auth/UseAuth";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 

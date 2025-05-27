@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Loader from "../components/Loader.tsx";
-import { useAuth } from "../components/auth/AuthContext";
-import { userService } from "../services/UserService";
-import type { User } from "../interfaces/User";
-import { PencilSquareIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import {useAuth} from "../components/auth/UseAuth";
+import {userService} from "../services/UserService";
+import type {User} from "../interfaces/User";
+import {PencilSquareIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import ConfirmationDialog from "./ConfirmationDialog";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -15,7 +15,7 @@ const getFullAvatarUrl = (avatarUrl: string | null | undefined): string | null =
 };
 
 const Profile: React.FC = () => {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [formData, setFormData] = useState<User | null>(user);
     const [isEditing, setIsEditing] = useState(false);
     const [message, setMessage] = useState("");
@@ -44,12 +44,12 @@ const Profile: React.FC = () => {
     const handleSave = async () => {
         try {
             if (!user || !user.id) return;
-            let updatedAvatarUrl = formData.avatarUrl;
-            console.log("UPDATED AVATAR URL : ", updatedAvatarUrl)
+            let updatedAvatarUrl:string|null = formData.avatarUrl;
             if (avatarFile) {
                 updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
+                console.log("UPDATED AVATAR URL : ", updatedAvatarUrl)
             }
-            const updatedUser = await userService.updateUser(user.id, {
+            const updatedUser:User = await userService.updateUser(user.id, {
                 ...formData,
                 avatarUrl: updatedAvatarUrl,
             });
@@ -57,6 +57,7 @@ const Profile: React.FC = () => {
             setFormData(updatedUser);
             setAvatarPreview(getFullAvatarUrl(updatedUser.avatarUrl));
             setAvatarFile(null);
+            setUser(updatedUser);
             setMessage("Profile updated successfully.");
             setIsEditing(false);
         } catch (error) {
