@@ -5,6 +5,7 @@ import {userService} from "../services/UserService";
 import type {User} from "../interfaces/User";
 import {PencilSquareIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import ConfirmationDialog from "./ConfirmationDialog";
+import LayoutWrapper from "./LayoutWrapper.tsx";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -106,7 +107,7 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
+        <LayoutWrapper>
             <h2 className="text-2xl font-bold mb-4">My Profile</h2>
 
             <div className="space-y-4">
@@ -273,7 +274,7 @@ const Profile: React.FC = () => {
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
-        </div>
+            </LayoutWrapper>
     );
 };
 

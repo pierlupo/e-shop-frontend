@@ -8,6 +8,7 @@ import {
     UserCircleIcon
 } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import LayoutWrapper from "../LayoutWrapper";
 
 const Signup: React.FC = () => {
     const [firstname, setFirstname] = useState("");
@@ -32,14 +33,14 @@ const Signup: React.FC = () => {
         } catch (err: any) {
             const message = err.response?.data?.message || "Signup failed";
             toast.error(message);
-            setError(message); // optional if you're removing inline error display
+            setError(message); // optional
         }
     };
 
     return (
+        <LayoutWrapper>
         <form
             onSubmit={handleSubmit}
-            className="max-w-md mx-auto mt-20 p-8 border rounded-lg shadow-lg bg-white"
         >
             <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
 
@@ -136,6 +137,7 @@ const Signup: React.FC = () => {
                 </Link>
             </p>
         </form>
+            </LayoutWrapper>
     );
 };
 

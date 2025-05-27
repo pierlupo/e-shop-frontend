@@ -1,7 +1,8 @@
+import {HomeIcon} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "./auth/UseAuth";
-import {UserIcon} from "@heroicons/react/24/solid";
+import {QuestionMarkCircleIcon, Squares2X2Icon, UserIcon, UserPlusIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
 
 const Navbar: React.FC = () => {
@@ -42,8 +43,12 @@ const Navbar: React.FC = () => {
                 )}
                 {isAuthenticated ? (
                     <>
-                        <Link to="/home" className="text-gray-700 hover:underline">Home</Link>
-                        <Link to="/dashboard" className="text-gray-700 hover:underline">Dashboard</Link>
+                        <Link to="/home" className="flex items-center text-gray-700 hover:underline">
+                            <HomeIcon className="h-4 w-4 mr-1" /> Home
+                        </Link>
+                        <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline">
+                            <Squares2X2Icon className="h-4 w-4 mr-1" /> Dashboard
+                        </Link>
                         <button
                             onClick={() => setShowLogoutConfirm(true)}
                             className="ml-auto px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -53,9 +58,15 @@ const Navbar: React.FC = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/login" className="text-gray-700 hover:underline">Login</Link>
-                        <Link to="/signup" className="text-gray-700 hover:underline">Signup</Link>
-                        <Link to="/help" className="text-gray-700 hover:underline">Help</Link>
+                        <Link to="/login" className="flex items-center text-gray-700 hover:underline">
+                            <UserIcon className="h-4 w-4 mr-1" /> Login
+                        </Link>
+                        <Link to="/signup" className="flex items-center text-gray-700 hover:underline">
+                            <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
+                        </Link>
+                        <Link to="/help" className="flex items-center text-gray-700 hover:underline">
+                            <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
+                        </Link>
                     </>
                 )}
             </div>

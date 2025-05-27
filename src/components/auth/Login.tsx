@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../components/auth/UseAuth";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
+import LayoutWrapper from "../LayoutWrapper";
 
 
 const Login: React.FC = () => {
@@ -27,14 +28,14 @@ const Login: React.FC = () => {
         } catch (err: any) {
             const message = err.response?.data?.message || "Login failed";
             toast.error(message);
-            setError(message); // optional, can be removed if you no longer want to show the <p> error message
+            setError(message); // optional
         }
     };
 
     return (
+        <LayoutWrapper>
         <form
             onSubmit={handleSubmit}
-            className="max-w-md mx-auto mt-20 p-8 border rounded-lg shadow-lg bg-white"
         >
             <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
@@ -90,6 +91,7 @@ const Login: React.FC = () => {
                 </Link>
             </p>
         </form>
+            </LayoutWrapper>
     );
 };
 
