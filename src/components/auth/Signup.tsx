@@ -1,3 +1,4 @@
+import type {AxiosError} from "axios";
 import React, {useState} from "react";
 import {signup as signupService} from "../../services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
@@ -28,9 +29,10 @@ const Signup: React.FC = () => {
             await signupService({ firstname, lastname, email, password });
             toast.success("Signup successful! You can now log in.");
             navigate("/login");
-            setSuccess(""); // not needed anymore unless you want to redirect
-        } catch (err:any) {
-            const message = err.response?.data?.message || "Signup failed";
+            setSuccess(""); // not needed anymore unless redirection wanted
+        } catch (error) {
+            const err = error as AxiosError<{ message?: string }>;
+            const message:string = err.response?.data?.message || "Signup failed";
             toast.error(message);
             setError(message); // optional
         }
