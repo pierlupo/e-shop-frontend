@@ -19,6 +19,8 @@ const App: React.FC = () => {
                 <Navbar />
                 {/*<Header />*/}
                 <CustomToaster />
+                {/* Main content fills available space */}
+                <main className="flex-grow flex items-center justify-center">
                 <ErrorBoundary fallback={<div>Something went wrong...! :/</div>}>
                     <Suspense fallback={<Loader />}>
                         <Routes>
@@ -32,6 +34,7 @@ const App: React.FC = () => {
                         </Routes>
                     </Suspense>
                 </ErrorBoundary>
+                </main>
                 <Footer />
                 </div>
             </>

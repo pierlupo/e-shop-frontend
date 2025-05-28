@@ -1,3 +1,4 @@
+import type {AxiosError} from "axios";
 import React, {useState} from "react";
 import {login as loginService} from "../../services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
@@ -25,8 +26,9 @@ const Login: React.FC = () => {
             login(token, user);
             toast.success(`Welcome back ${user.firstname || "user"}! 🎉`);
             navigate("/home");
-        } catch (err: any) {
-            const message = err.response?.data?.message || "Login failed";
+        } catch (error) {
+            const err = error as AxiosError<{ message?: string }>;
+            const message:string = err.response?.data?.message || "Login failed";
             toast.error(message);
             setError(message); // optional
         }

@@ -1,5 +1,6 @@
 import {HomeIcon} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
+import {toast} from "react-hot-toast";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "./auth/UseAuth";
 import {QuestionMarkCircleIcon, Squares2X2Icon, UserIcon, UserPlusIcon} from "@heroicons/react/24/outline";
@@ -11,6 +12,7 @@ const Navbar: React.FC = () => {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const handleLogout = () => {
         logout();
+        toast.success(`See you next time ${user?.firstname || "user"}! 👋`);
         navigate("/login");
     };
 
