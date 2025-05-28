@@ -2,7 +2,7 @@ import type {AxiosError} from "axios";
 import React, {useState} from "react";
 import {login as loginService} from "../../services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../components/auth/UseAuth";
+import {useAuth} from "../../hooks/UseAuth.ts";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import LayoutWrapper from "../LayoutWrapper";
@@ -35,16 +35,16 @@ const Login: React.FC = () => {
     };
 
     return (
-        <LayoutWrapper>
+        <LayoutWrapper className="dark:bg-gray-600">
         <form onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center dark:text-amber-50">Login</h2>
             {error && (
                 <p className="mb-4 text-red-600 text-center font-semibold">{error}</p>
             )}
             <div className="flex flex-col items-center">
             {/* Email */}
             <div className="mb-4 w-80">
-                <label htmlFor="email" className="block mb-1 font-medium">
+                <label htmlFor="email" className="block mb-1 font-medium dark:text-amber-50">
                     Email
                 </label>
                 <div className="relative">
@@ -55,14 +55,14 @@ const Login: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         placeholder="Enter your email"
                     />
                 </div>
             </div>
             {/* Password */}
             <div className="mb-6 w-80">
-                <label className="block mb-1 font-medium" htmlFor="password">
+                <label className="block mb-1 font-medium dark:text-amber-50" htmlFor="password">
                     Password
                 </label>
                 <div className="relative">
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         placeholder="Enter your password"
                     />
                 </div>
@@ -84,7 +84,7 @@ const Login: React.FC = () => {
             >
                 Login
             </button>
-            <p className="text-sm text-center">
+            <p className="text-sm text-center dark:text-amber-50">
                 Don’t have an account ? {" "}
                 <Link to="/signup" className="text-blue-600 hover:underline">
                     Signup here

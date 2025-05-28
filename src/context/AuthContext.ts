@@ -1,5 +1,5 @@
 import React, {createContext} from "react";
-import type {User} from "../../interfaces/User";
+import type {User} from "../interfaces/User.ts";
 
 export interface AuthContextType {
     isAuthenticated: boolean;

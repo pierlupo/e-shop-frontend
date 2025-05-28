@@ -20,7 +20,7 @@ const App: React.FC = () => {
                 {/*<Header />*/}
                 <CustomToaster />
                 {/* Main content fills available space */}
-                <main className="flex-grow flex items-center justify-center">
+                <main className="flex-grow flex items-center justify-center dark:bg-gray-700">
                 <ErrorBoundary fallback={<div>Something went wrong...! :/</div>}>
                     <Suspense fallback={<Loader />}>
                         <Routes>

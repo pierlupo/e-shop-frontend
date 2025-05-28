@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {userService} from "../../services/UserService";
-import {AuthContext} from "./AuthContext";
+import {AuthContext} from "../../context/AuthContext.ts";
 import type {User} from "../../interfaces/User";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

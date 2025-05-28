@@ -2,15 +2,18 @@ import {HomeIcon} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {toast} from "react-hot-toast";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "./auth/UseAuth";
-import {QuestionMarkCircleIcon, Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon} from "@heroicons/react/24/outline";
+import {useAuth} from "../hooks/UseAuth.ts";
+import {QuestionMarkCircleIcon, Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { useDarkMode } from '../hooks/UseDarkMode';
+
 
 const Navbar: React.FC = () => {
     const {isAuthenticated, logout, user} = useAuth();
     const navigate = useNavigate();
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const {isDarkMode: darkMode, toggleDarkMode: setDarkMode} = useDarkMode();
 
     const handleLogout = () => {
         logout();
@@ -20,19 +23,19 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <nav className="bg-gray-100 shadow">
+            <nav className="bg-gray-100 dark:bg-gray-600 shadow">
                 <div className="mx-auto px-6">
                     {/* Flex container for nav items */}
                     <div className="flex items-center justify-between py-4">
                         {/* Left: Logo and Title */}
                         <Link to="/" className="flex items-center space-x-2">
                             <img src="/favicon-cart.jpg" alt="Logo" className="w-8 h-8" />
-                            <span className="font-bold text-xl text-gray-800">E-Shop</span>
+                            <span className="font-bold text-xl text-gray-800 dark:text-amber-50">E-Shop</span>
                         </Link>
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-4">
                             {isAuthenticated && user && (
-                                <Link to="/profile" className="relative group flex items-center space-x-2 text-gray-700">
+                                <Link to="/profile" className="relative group flex items-center space-x-2 text-gray-700 dark:text-amber-50">
                                     {user.avatarUrl ? (
                                         <img
                                             src={`${import.meta.env.VITE_API_BASE_URL}${user.avatarUrl}`}
@@ -43,14 +46,17 @@ const Navbar: React.FC = () => {
                                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
                                     )}
                                     <span className="hidden sm:inline">Welcome {user.firstname} !</span>
+                                    <span className="absolute -bottom-8 left-[-2rem] transform -translate-x-1/2 scale-0 group-hover:scale-100 bg-black text-white text-xs px-2 py-1 rounded shadow transition-transform duration-200">
+                                        Edit your profile
+                                    </span>
                                 </Link>
                             )}
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/home" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/home" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <HomeIcon className="h-4 w-4 mr-1" /> Home
                                     </Link>
-                                    <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <Squares2X2Icon className="h-4 w-4 mr-1" /> Dashboard
                                     </Link>
                                     <button
@@ -59,18 +65,32 @@ const Navbar: React.FC = () => {
                                     >
                                         Logout
                                     </button>
+                                    <button
+                                        onClick={() => setDarkMode()}
+                                        className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                                        title="Toggle dark mode"
+                                    >
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                    </button>
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/login" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/login" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <UserIcon className="h-4 w-4 mr-1" /> Login
                                     </Link>
-                                    <Link to="/signup" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/signup" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
                                     </Link>
-                                    <Link to="/help" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/help" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
                                     </Link>
+                                    <button
+                                        onClick={() => setDarkMode()}
+                                        className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                                        title="Toggle dark mode"
+                                    >
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                    </button>
                                 </>
                             )}
                         </div>
@@ -119,6 +139,13 @@ const Navbar: React.FC = () => {
                                     >
                                         Logout
                                     </button>
+                                    <button
+                                        onClick={() => setDarkMode()}
+                                        className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                                        title="Toggle dark mode"
+                                    >
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                    </button>
                                 </>
                             ) : (
                                 <>
@@ -131,6 +158,13 @@ const Navbar: React.FC = () => {
                                     <Link to="/help" className="flex items-center text-gray-700 hover:underline">
                                         <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
                                     </Link>
+                                    <button
+                                        onClick={() => setDarkMode()}
+                                        className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                                        title="Toggle dark mode"
+                                    >
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                    </button>
                                 </>
                             )}
                         </div>

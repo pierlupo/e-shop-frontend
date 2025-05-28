@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Loader from "../components/Loader.tsx";
-import {useAuth} from "../components/auth/UseAuth";
+import {useAuth} from "../hooks/UseAuth.ts";
 import {userService} from "../services/UserService";
 import type {User} from "../interfaces/User";
 import {PencilSquareIcon, LockClosedIcon} from '@heroicons/react/24/outline';
@@ -107,9 +107,9 @@ const Profile: React.FC = () => {
     };
 
     return (
-        <LayoutWrapper>
-            <div className="flex flex-col items-center">
-            <h2 className="text-2xl font-bold mb-4">My Profile</h2>
+        <LayoutWrapper className="dark:bg-gray-600">
+            <div className="flex flex-col items-center ">
+            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">My Profile</h2>
             <div className="space-y-4">
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
@@ -141,38 +141,38 @@ const Profile: React.FC = () => {
                     )}
                 </div>
                 <div>
-                    <label className="block font-semibold">Firstname</label>
+                    <label className="block font-semibold dark:text-amber-50">Firstname</label>
                     <input
                         type="text"
                         name="firstname"
                         value={formData.firstname}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-80 p-2 border rounded"
+                        className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                     />
                 </div>
 
                 <div>
-                    <label className="block font-semibold">Lastname</label>
+                    <label className="block font-semibold dark:text-amber-50">Lastname</label>
                     <input
                         type="text"
                         name="lastname"
                         value={formData.lastname}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-80 p-2 border rounded"
+                        className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                     />
                 </div>
 
                 <div>
-                    <label className="block font-semibold">Email</label>
+                    <label className="block font-semibold dark:text-amber-50">Email</label>
                     <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="w-80 p-2 border rounded"
+                        className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                     />
                 </div>
             </div>
@@ -213,33 +213,33 @@ const Profile: React.FC = () => {
                 )}
             </div>
             <div className="mt-10 border-t pt-6">
-                <h2 className="text-2xl font-bold mb-4">Change Password</h2>
+                <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">Change Password</h2>
                 <div className="space-y-4">
                     <div>
-                        <label className="block font-semibold">Current Password</label>
+                        <label className="block font-semibold dark:text-amber-50">Current Password</label>
                         <input
                             type="password"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
-                            className="w-80 p-2 border rounded"
+                            className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold">New Password</label>
+                        <label className="block font-semibold dark:text-amber-50">New Password</label>
                         <input
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-80 p-2 border rounded"
+                            className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold">Confirm New Password</label>
+                        <label className="block font-semibold dark:text-amber-50">Confirm New Password</label>
                         <input
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-80 p-2 border rounded"
+                            className="w-80 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         />
                     </div>
                 </div>

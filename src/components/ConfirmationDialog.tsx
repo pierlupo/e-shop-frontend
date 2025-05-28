@@ -44,7 +44,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <DialogPanel className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 transition-all">
+                        <DialogPanel className="bg-white dark:bg-gray-600 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 transition-all">
                             <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
                                 <ExclamationTriangleIcon className="h-6 w-6 text-yellow-500" />
                                 {title}
@@ -55,7 +55,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                             <div className="flex justify-end space-x-2 pt-2">
                                 <button
                                     onClick={onCancel}
-                                    className="px-4 py-2 rounded bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                                    className="px-4 py-2 rounded bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-600"
                                 >
                                     Cancel
                                 </button>

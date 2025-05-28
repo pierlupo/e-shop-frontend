@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import {DarkModeProvider} from "./context/DarkModeProvider.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import App from "./App";
 import {AuthProvider} from "./components/auth/AuthProvider";
@@ -11,6 +12,7 @@ import '../index.css';
 // AuthProvider provides authentication context (e.g., login state).
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
+        <DarkModeProvider>
         <BrowserRouter>
             <AuthProvider>
                 <ErrorBoundary fallback={<div>Oops! Something went wrong globally.</div>}>
@@ -18,5 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </ErrorBoundary>
             </AuthProvider>
         </BrowserRouter>
+        </DarkModeProvider>
     </React.StrictMode>
 );
