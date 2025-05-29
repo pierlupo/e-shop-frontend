@@ -24,11 +24,11 @@ const Login: React.FC = () => {
             const user = response.data.user;
             const token = response.data.token;
             login(token, user);
-            toast.success(`Welcome back ${user.firstname || "user"}! 🎉`);
+            toast.success(`Welcome ${user.firstname || "user"}!`);
             navigate("/home");
         } catch (error) {
             const err = error as AxiosError<{ message?: string }>;
-            const message:string = err.response?.data?.message + "..." || "Login failed! Please try again.";
+            const message:string = `${err.response?.data?.message}...\nPlease try again !` ;
             toast.error(message);
             setError(message); // optional
         }

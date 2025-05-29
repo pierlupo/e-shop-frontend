@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
 
     const handleLogout = () => {
         logout();
-        toast.success(`See you next time ${user?.firstname || "user"}! 👋`);
+        toast.success(`See you next time ${user?.firstname || "user"}`);
         navigate("/login");
     };
 
@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
                     {/* Flex container for nav items */}
                     <div className="flex items-center justify-between py-4">
                         {/* Left: Logo and Title */}
-                        <Link to="/" className="flex items-center space-x-2">
+                        <Link to="/home" className="flex items-center space-x-2">
                             <img src="/favicon-cart.jpg" alt="Logo" className="w-8 h-8" />
                             <span className="font-bold text-xl text-gray-800 dark:text-amber-50">E-Shop</span>
                         </Link>
