@@ -28,7 +28,7 @@ const Login: React.FC = () => {
             navigate("/home");
         } catch (error) {
             const err = error as AxiosError<{ message?: string }>;
-            const message:string = err.response?.data?.message + `...` || "Login failed! Please try again.";
+            const message:string = err.response?.data?.message + "..." || "Login failed! Please try again.";
             toast.error(message);
             setError(message); // optional
         }
