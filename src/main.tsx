@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import {DarkModeProvider} from "./context/DarkModeProvider.tsx";
-import ErrorBoundary from "./components/ErrorBoundary.tsx";
+import {DarkModeProvider} from "./providers/DarkModeProvider";
+import ErrorBoundary from "./components/ErrorBoundary";
 import App from "./App";
-import {AuthProvider} from "./components/auth/AuthProvider";
+import {AuthProvider} from "./providers/AuthProvider";
 import '../index.css';
 
 // React.StrictMode helps highlight potential problems in your app during development.

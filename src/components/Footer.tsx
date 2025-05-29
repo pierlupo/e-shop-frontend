@@ -5,6 +5,7 @@ import {
     InformationCircleIcon,
     PhoneIcon,
     ShieldCheckIcon,
+    QuestionMarkCircleIcon
 } from "@heroicons/react/24/outline";
 
 const Footer: React.FC = () => {
@@ -26,6 +27,9 @@ const Footer: React.FC = () => {
                     </Link>
                     <Link to="/privacy" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                         <ShieldCheckIcon className="h-4 w-4 mr-1" /> Privacy
+                    </Link>
+                    <Link to="/help" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
+                        <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
                     </Link>
                 </div>
             </div>

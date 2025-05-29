@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DarkModeContext } from './DarkModeContext';
+import { DarkModeContext } from '../context/DarkModeContext.ts';
 
 
 export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {userService} from "../../services/UserService";
-import {AuthContext} from "../../context/AuthContext.ts";
-import type {User} from "../../interfaces/User";
+import {userService} from "../services/UserService.ts";
+import {AuthContext} from "../context/AuthContext.ts";
+import type {User} from "../interfaces/User.ts";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem("token"));

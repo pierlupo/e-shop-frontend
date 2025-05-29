@@ -7,12 +7,16 @@ const CustomToaster: React.FC = () => {
             position="top-right"
             reverseOrder={false}
             toastOptions={{
-                // Global default styles for all toasts
+                // Global default styles
                 style: {
-                    borderRadius: "8px",
+                    minHeight: "100px",
+                    minWidth: "300px",
+                    borderRadius: "10px",
                     background: "#1a202c",  // dark slate
                     color: "#f7fafc",       // light text
-                    fontWeight: "600",
+                    fontSize: "20px",
+                    fontFamily:"'Inter', sans-serif",
+                    fontWeight: "400",
                     boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
                 },
                 // Customized success toast

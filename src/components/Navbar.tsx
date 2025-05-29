@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {toast} from "react-hot-toast";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../hooks/UseAuth.ts";
-import {QuestionMarkCircleIcon, Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
+import {Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useDarkMode } from '../hooks/UseDarkMode';
 
@@ -46,7 +46,9 @@ const Navbar: React.FC = () => {
                                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
                                     )}
                                     <span className="hidden sm:inline">Welcome {user.firstname} !</span>
-                                    <span className="absolute -bottom-8 left-[-2rem] transform -translate-x-1/2 scale-0 group-hover:scale-100 bg-black text-white text-xs px-2 py-1 rounded shadow transition-transform duration-200">
+                                    <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
+             bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
+             transition-all duration-200 whitespace-nowrap z-10">
                                         Edit your profile
                                     </span>
                                 </Link>
@@ -80,9 +82,6 @@ const Navbar: React.FC = () => {
                                     </Link>
                                     <Link to="/signup" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
-                                    </Link>
-                                    <Link to="/help" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
-                                        <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
                                     </Link>
                                     <button
                                         onClick={() => setDarkMode()}
@@ -154,9 +153,6 @@ const Navbar: React.FC = () => {
                                     </Link>
                                     <Link to="/signup" className="flex items-center text-gray-700 hover:underline">
                                         <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
-                                    </Link>
-                                    <Link to="/help" className="flex items-center text-gray-700 hover:underline">
-                                        <QuestionMarkCircleIcon className="h-4 w-4 mr-1" /> Help
                                     </Link>
                                     <button
                                         onClick={() => setDarkMode()}
