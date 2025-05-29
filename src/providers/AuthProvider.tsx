@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {userService} from "../services/UserService.ts";
+import {validateToken} from "../services/authService.ts";
+import {userService} from "../services/userService.ts";
 import {AuthContext} from "../context/AuthContext.ts";
 import type {User} from "../interfaces/User.ts";
 
@@ -21,6 +22,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .catch(() => logout());
         }
     }, [user?.id]);
+
+    useEffect(() => {
+        const checkToken = async () => {
+            const isValid = await validateToken();
+            if (!isValid) {
+                localStorage.removeItem('token');
+                logout();
+            }
+        };
+        checkToken();
+    }, []);
 
     const login = (token: string, user: User) => {
         localStorage.setItem("token", token);

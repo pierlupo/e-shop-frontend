@@ -1,6 +1,6 @@
 import type {AxiosError} from "axios";
 import React, {useState} from "react";
-import {signup as signupService} from "../../services/AuthService";
+import {signup as signupService} from "../../services/authService.ts";
 import {Link, useNavigate} from "react-router-dom";
 import {
     EnvelopeIcon,

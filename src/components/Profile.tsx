@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Loader from "../components/Loader.tsx";
 import {useAuth} from "../hooks/UseAuth.ts";
-import {userService} from "../services/UserService";
+import {userService} from "../services/userService.ts";
 import type {User} from "../interfaces/User";
 import {PencilSquareIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import ConfirmationDialog from "./ConfirmationDialog";

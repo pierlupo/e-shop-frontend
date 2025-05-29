@@ -1,6 +1,6 @@
 import type {AxiosError} from "axios";
 import React, {useState} from "react";
-import {login as loginService} from "../../services/AuthService";
+import {login as loginService} from "../../services/authService.ts";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../hooks/UseAuth.ts";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';

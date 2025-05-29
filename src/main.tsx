@@ -5,6 +5,7 @@ import {DarkModeProvider} from "./providers/DarkModeProvider";
 import ErrorBoundary from "./components/ErrorBoundary";
 import App from "./App";
 import {AuthProvider} from "./providers/AuthProvider";
+import './i18n';
 import '../index.css';
 
 // React.StrictMode helps highlight potential problems in your app during development.
