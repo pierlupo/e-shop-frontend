@@ -24,14 +24,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, [user?.id]);
 
     useEffect(() => {
-        const checkToken = async () => {
-            const isValid = await validateToken();
-            if (!isValid) {
-                localStorage.removeItem('token');
+        (async () => {
+            try {
+                const isValid = await validateToken();
+                if (!isValid) {
+                    localStorage.removeItem('token');
+                    logout();
+                }
+            } catch (error) {
+                console.error("Token validation failed:", error);
                 logout();
             }
-        };
-        checkToken();
+        })();
     }, []);
 
     const login = (token: string, user: User) => {
