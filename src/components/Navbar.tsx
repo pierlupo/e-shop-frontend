@@ -2,6 +2,8 @@ import {HomeIcon} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {toast} from "react-hot-toast";
 import {Link, useNavigate} from "react-router-dom";
+import {LanguageDropdown} from "./LanguageDropDown.tsx";
+
 import {useAuth} from "../hooks/UseAuth.ts";
 import {Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
@@ -62,17 +64,18 @@ const Navbar: React.FC = () => {
                                         <Squares2X2Icon className="h-4 w-4 mr-1" /> Dashboard
                                     </Link>
                                     <button
-                                        onClick={() => setShowLogoutConfirm(true)}
-                                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                                    >
-                                        Logout
-                                    </button>
-                                    <button
                                         onClick={() => setDarkMode()}
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title="Toggle dark mode"
                                     >
                                         {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                    </button>
+                                    <LanguageDropdown />
+                                    <button
+                                        onClick={() => setShowLogoutConfirm(true)}
+                                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                    >
+                                        Logout
                                     </button>
                                 </>
                             ) : (
@@ -90,6 +93,7 @@ const Navbar: React.FC = () => {
                                     >
                                         {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
+                                    <LanguageDropdown />
                                 </>
                             )}
                         </div>
