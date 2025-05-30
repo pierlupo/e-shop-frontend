@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
     const handleLogout = () => {
         logout();
-        toast.success(`See you next time ${user?.firstname || "user"}`);
+        toast.success(`${t('logout_success_toast_msg')}\n${user?.firstname || "user"} — 👋` );
         navigate("/login");
     };
 
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
                                     ) : (
                                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
                                     )}
-                                    <span className="hidden sm:inline">Welcome {user.firstname} !</span>
+                                    <span className="hidden sm:inline">{t('welcome_msg', { name: user.firstname })}{" "} !</span>
                                     <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
              bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
              transition-all duration-200 whitespace-nowrap z-10">
@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
                                     <button
                                         onClick={() => setDarkMode()}
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
-                                        title="Toggle dark mode"
+                                        title={t('tooltip_darkMode')}
                                     >
                                         {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
                                     <button
                                         onClick={() => setDarkMode()}
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
-                                        title="Toggle dark mode"
+                                        title={t('tooltip_darkMode')}
                                     >
                                         {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
@@ -147,7 +147,7 @@ const Navbar: React.FC = () => {
                                     <button
                                         onClick={() => setDarkMode()}
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
-                                        title="Toggle dark mode"
+                                        title={t('tooltip_darkMode')}
                                     >
                                         {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
@@ -176,8 +176,8 @@ const Navbar: React.FC = () => {
             {/* Logout Confirmation Dialog */}
             <ConfirmationDialog
                 isOpen={showLogoutConfirm}
-                title="Confirm Logout"
-                message="Are you sure you want to log out ?"
+                title={t('logout_title')}
+                message={t('logout_msg')}
                 onConfirm={() => {
                     setShowLogoutConfirm(false);
                     handleLogout();

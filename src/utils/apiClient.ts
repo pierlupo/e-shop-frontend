@@ -4,6 +4,12 @@ const apiClient = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
+let onUnauthorized: (() => void) | null = null;
+
+export function setUnauthorizedHandler(handler: () => void) {
+    onUnauthorized = handler;
+}
+
 // Automatically attach Authorization header if token is present
 apiClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
@@ -19,7 +25,9 @@ apiClient.interceptors.response.use(
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = '/login';
+            if (onUnauthorized) {
+                onUnauthorized();
+            }
         }
         return Promise.reject(error);
     }

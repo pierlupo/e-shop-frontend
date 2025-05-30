@@ -1,4 +1,4 @@
-import type {AxiosError} from "axios";
+import { isAxiosError} from "axios";
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {login as loginService} from "../../services/authService.ts";
@@ -17,24 +17,35 @@ const Login: React.FC = () => {
     const navigate = useNavigate();
     const {login} = useAuth();
 
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(""); // still clear state in case it's used elsewhere
-
+        setError(""); // still clears state in case it's used elsewhere
         try {
-            const response = await loginService({ email, password });
+            const response = await loginService({email, password});
             const user = response.data.user;
             const token = response.data.token;
             login(token, user);
-            toast.success(`Welcome ${user.firstname || "user"}!`);
+            toast.success(`${t('login_succeeded')}\n${t('welcome_msg', { name: user.firstname })} — 👌`);
             navigate("/home");
         } catch (error) {
-            const err = error as AxiosError<{ message?: string }>;
-            const message:string = `${err.response?.data?.message}...\nPlease try again !` ;
-            toast.error(message);
-            setError(message); // optional
+            if (isAxiosError(error)) {
+                console.log(error);
+                const backendMessageRaw = error.response?.data?.message;
+                // Map English backend message to localized translation
+                const backendMessage =
+                    backendMessageRaw === 'Bad credentials' ? t('default_error_msg') : backendMessageRaw || t('default_error_msg');
+
+                const message = `${backendMessage}\n${t('login_err_msg')}`;
+                toast.error(message);
+                setError(message);
+            } else {
+                const message = `${t('default_error_msg')}\n${t('login_err_msg')}`;
+                toast.error(message);
+                setError(message);
+            }
         }
-    };
+    }
 
     return (
         <LayoutWrapper className="dark:bg-gray-600">
