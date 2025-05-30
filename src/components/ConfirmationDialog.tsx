@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import {Description, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import {useTranslation} from "react-i18next";
 
 interface ConfirmationDialogProps {
     isOpen: boolean;
@@ -17,6 +18,9 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                                                                    onConfirm,
                                                                    onCancel,
                                                                }) => {
+
+    const {t} = useTranslation();
+
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={onCancel}>
@@ -60,7 +64,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                                                 focus:ring-2 focus:ring-gray-400
                                                 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700"
                                 >
-                                    Cancel
+                                    {t('cancel_btn')}
                                 </button>
                                 <button
                                     onClick={onConfirm}
@@ -68,7 +72,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                                                 bg-blue-600 text-white hover:bg-blue-700
                                                 focus:ring-2 focus:ring-blue-400"
                                 >
-                                    Confirm
+                                    {t('confirm_btn')}
                                 </button>
                             </div>
                         </DialogPanel>

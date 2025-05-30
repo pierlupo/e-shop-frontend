@@ -1,6 +1,7 @@
 import {HomeIcon} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {toast} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
 import {LanguageDropdown} from "./LanguageDropDown.tsx";
 
@@ -16,6 +17,7 @@ const Navbar: React.FC = () => {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const {isDarkMode: darkMode, toggleDarkMode: setDarkMode} = useDarkMode();
+    const {t} = useTranslation();
 
     const handleLogout = () => {
         logout();
@@ -32,7 +34,7 @@ const Navbar: React.FC = () => {
                         {/* Left: Logo and Title */}
                         <Link to="/home" className="flex items-center space-x-2">
                             <img src="/favicon-cart.jpg" alt="Logo" className="w-8 h-8" />
-                            <span className="font-bold text-xl text-gray-800 dark:text-amber-50">E-Shop</span>
+                            <span className="font-bold text-xl text-gray-800 dark:text-amber-50">{t('title')}</span>
                         </Link>
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-4">
@@ -51,17 +53,17 @@ const Navbar: React.FC = () => {
                                     <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
              bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
              transition-all duration-200 whitespace-nowrap z-10">
-                                        Edit your profile
+                                        {t('tooltip_profile')}
                                     </span>
                                 </Link>
                             )}
                             {isAuthenticated ? (
                                 <>
                                     <Link to="/home" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
-                                        <HomeIcon className="h-4 w-4 mr-1" /> Home
+                                        <HomeIcon className="h-4 w-4 mr-1" /> {t('home_link')}
                                     </Link>
                                     <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
-                                        <Squares2X2Icon className="h-4 w-4 mr-1" /> Dashboard
+                                        <Squares2X2Icon className="h-4 w-4 mr-1" /> {t('dash_link')}
                                     </Link>
                                     <button
                                         onClick={() => setDarkMode()}
@@ -75,16 +77,16 @@ const Navbar: React.FC = () => {
                                         onClick={() => setShowLogoutConfirm(true)}
                                         className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
                                     >
-                                        Logout
+                                        {t('logout_btn')}
                                     </button>
                                 </>
                             ) : (
                                 <>
                                     <Link to="/login" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
-                                        <UserIcon className="h-4 w-4 mr-1" /> Login
+                                        <UserIcon className="h-4 w-4 mr-1" /> {t('login_link_nav')}
                                     </Link>
                                     <Link to="/signup" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
-                                        <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
+                                        <UserPlusIcon className="h-4 w-4 mr-1" /> {t('signup_link_nav')}
                                     </Link>
                                     <button
                                         onClick={() => setDarkMode()}
@@ -128,10 +130,10 @@ const Navbar: React.FC = () => {
                             {isAuthenticated ? (
                                 <>
                                     <Link to="/home" className="flex items-center text-gray-700 hover:underline">
-                                        <HomeIcon className="h-4 w-4 mr-1" /> Home
+                                        <HomeIcon className="h-4 w-4 mr-1" /> {t('home_link')}
                                     </Link>
                                     <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline">
-                                        <Squares2X2Icon className="h-4 w-4 mr-1" /> Dashboard
+                                        <Squares2X2Icon className="h-4 w-4 mr-1" /> {t('dash_link')}
                                     </Link>
                                     <button
                                         onClick={() => {
@@ -153,10 +155,10 @@ const Navbar: React.FC = () => {
                             ) : (
                                 <>
                                     <Link to="/login" className="flex items-center text-gray-700 hover:underline">
-                                        <UserIcon className="h-4 w-4 mr-1" /> Login
+                                        <UserIcon className="h-4 w-4 mr-1" /> {t('login_link_nav')}
                                     </Link>
                                     <Link to="/signup" className="flex items-center text-gray-700 hover:underline">
-                                        <UserPlusIcon className="h-4 w-4 mr-1" /> Signup
+                                        <UserPlusIcon className="h-4 w-4 mr-1" /> {t('signup_link_nav')}
                                     </Link>
                                     <button
                                         onClick={() => setDarkMode()}
@@ -175,7 +177,7 @@ const Navbar: React.FC = () => {
             <ConfirmationDialog
                 isOpen={showLogoutConfirm}
                 title="Confirm Logout"
-                message="Are you sure you want to log out?"
+                message="Are you sure you want to log out ?"
                 onConfirm={() => {
                     setShowLogoutConfirm(false);
                     handleLogout();

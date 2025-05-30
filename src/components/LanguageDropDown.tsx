@@ -4,24 +4,29 @@ import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/react';
 import { GlobeAltIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 const languages = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'en', flag: '🇬🇧' },
+    { code: 'fr', flag: '🇫🇷' },
 ];
 
 export const LanguageDropdown: React.FC = () => {
-  const { i18n } = useTranslation();
+
+  const {t, i18n } = useTranslation();
   const currentLanguage = languages.find((lang) => lang.code === i18n.language) ?? languages[0];
 
-  const changeLanguage = (code: string) => {
-    i18n.changeLanguage(code);
-    localStorage.setItem('i18nextLng', code);
-  };
+    const changeLanguage = async (code: string) => {
+        try {
+            await i18n.changeLanguage(code);
+            localStorage.setItem('i18nextLng', code);
+        } catch (error) {
+            console.error("Error changing language:", error);
+        }
+    };
 
   return (
       <Menu as="div" className="relative inline-block text-left">
         <MenuButton
             className="flex items-center justify-center rounded-full bg-gray-100 p-2 hover:bg-gray-200 transition dark:bg-gray-600"
-            title={`Language: ${currentLanguage.label}`}
+            title={`${t('language.label')}: ${t(`language.${currentLanguage.code}`)}`}
         >
           <GlobeAltIcon className="h-6 w-6 text-gray-600 dark:text-amber-50" />
         </MenuButton>
@@ -40,7 +45,7 @@ export const LanguageDropdown: React.FC = () => {
                     >
                 <span className="flex items-center">
                   <span className="mr-2">{lang.flag}</span>
-                  {lang.label}
+                    {t(`language.${lang.code}`)}
                 </span>
                       {i18n.language === lang.code && (
                           <CheckIcon className="w-4 h-4 text-blue-600" />

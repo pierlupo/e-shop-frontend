@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {useTranslation} from "react-i18next";
 import Loader from "../components/Loader.tsx";
 import {useAuth} from "../hooks/UseAuth.ts";
 import {userService} from "../services/userService.ts";
@@ -29,6 +30,7 @@ const Profile: React.FC = () => {
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
     const [avatarPreview, setAvatarPreview] = useState<string | null>(getFullAvatarUrl(formData?.avatarUrl));
     const [avatarError, setAvatarError] = useState(false);
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (formData?.avatarUrl) {
@@ -109,7 +111,7 @@ const Profile: React.FC = () => {
     return (
         <LayoutWrapper className="dark:bg-gray-600">
             <div className="flex flex-col items-center ">
-            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">My Profile</h2>
+            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('profile_title')}</h2>
             <div className="space-y-4">
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
@@ -120,7 +122,7 @@ const Profile: React.FC = () => {
                                  onError={() => setAvatarError(true)} />
                         ) : (
                             <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
-                                No Avatar
+                                {t('profile_no_avatar')}
                             </div>
                         )}
                     </div>
@@ -129,7 +131,7 @@ const Profile: React.FC = () => {
                             htmlFor="avatarUpload"
                             className="cursor-pointer px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
-                            Upload Avatar
+                            {t('profile_upload_avatar')}
                             <input
                                 id="avatarUpload"
                                 type="file"
@@ -141,7 +143,7 @@ const Profile: React.FC = () => {
                     )}
                 </div>
                 <div>
-                    <label className="block font-semibold dark:text-amber-50">Firstname</label>
+                    <label className="block font-semibold dark:text-amber-50">{t('profile_firstname_label')}</label>
                     <input
                         type="text"
                         name="firstname"
@@ -153,7 +155,7 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div>
-                    <label className="block font-semibold dark:text-amber-50">Lastname</label>
+                    <label className="block font-semibold dark:text-amber-50">{t('profile_lastname_label')}</label>
                     <input
                         type="text"
                         name="lastname"
@@ -165,7 +167,7 @@ const Profile: React.FC = () => {
                 </div>
 
                 <div>
-                    <label className="block font-semibold dark:text-amber-50">Email</label>
+                    <label className="block font-semibold dark:text-amber-50">{t('profile_email_label')}</label>
                     <input
                         type="email"
                         name="email"
@@ -189,7 +191,7 @@ const Profile: React.FC = () => {
                             }}
                             className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                         >
-                            Save Changes
+                            {t('profile_save_changes_btn')}
                         </button>
                         <button
                             onClick={() => {
@@ -199,7 +201,7 @@ const Profile: React.FC = () => {
                             }}
                             className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
                         >
-                            Cancel
+                            {t('profile_cancel_btn')}
                         </button>
                     </>
                 ) : (
@@ -208,15 +210,15 @@ const Profile: React.FC = () => {
                         className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                     >
                         <PencilSquareIcon className="w-5 h-5 text-white" />
-                        Edit Profile
+                        {t('profile_edit_btn')}
                     </button>
                 )}
             </div>
             <div className="mt-10 border-t pt-6">
-                <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">Change Password</h2>
+                <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('change_pwd_title')}</h2>
                 <div className="space-y-4">
                     <div>
-                        <label className="block font-semibold dark:text-amber-50">Current Password</label>
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_current_pwd')}</label>
                         <input
                             type="password"
                             value={currentPassword}
@@ -225,7 +227,7 @@ const Profile: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold dark:text-amber-50">New Password</label>
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_new_pwd')}</label>
                         <input
                             type="password"
                             value={newPassword}
@@ -234,7 +236,7 @@ const Profile: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label className="block font-semibold dark:text-amber-50">Confirm New Password</label>
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_confirm_new_pwd')}</label>
                         <input
                             type="password"
                             value={confirmPassword}
@@ -251,7 +253,7 @@ const Profile: React.FC = () => {
                     className="w-80 flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
                 >
                     <LockClosedIcon className="w-5 h-5 text-white"/>
-                    Change Password
+                    {t('profile_change_pwd_btn')}
                 </button>
                 {passwordMessage && (
                     <p className="mt-2 text-sm text-blue-600">{passwordMessage}</p>

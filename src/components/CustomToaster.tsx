@@ -2,6 +2,7 @@ import React from "react";
 import { Toaster } from "react-hot-toast";
 
 const CustomToaster: React.FC = () => {
+
     return (
         <Toaster
             position="top-right"

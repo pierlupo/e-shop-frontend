@@ -8,8 +8,8 @@ const Home: React.FC = () => {
 
     return (
         <div className="text-2xl font-bold mb-6 text-center dark:text-amber-50">
-            <h2>{t('welcome_message')}</h2>
-            <p>{t('log_success_message')}</p>
+            <h2>{t('welcome_home_msg')}</h2>
+            <p>{t('log_success_msg')}</p>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import type {AxiosError} from "axios";
 import React, {useState} from "react";
+import {useTranslation} from "react-i18next";
 import {signup as signupService} from "../../services/authService.ts";
 import {Link, useNavigate} from "react-router-dom";
 import {
@@ -19,7 +20,7 @@ const Signup: React.FC = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const navigate = useNavigate();
-
+    const {t} = useTranslation();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,7 +42,7 @@ const Signup: React.FC = () => {
     return (
         <LayoutWrapper className="dark:bg-gray-600">
         <form onSubmit={handleSubmit}>
-            <h2 className="text-2xl font-bold mb-6 text-center dark:text-amber-50">Signup</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center dark:text-amber-50">{t('signup_title')}</h2>
             {error && (
                 <p className="mb-4 text-red-600 text-center font-semibold">{error}</p>
             )}
@@ -52,7 +53,7 @@ const Signup: React.FC = () => {
             {/* Firstname */}
                 <div className="mb-4 w-80">
                 <label htmlFor="firstname" className="block mb-1 font-medium dark:text-amber-50">
-                    Firstname
+                    {t('signup_firstname_label')}
                 </label>
                 <div className="relative">
                     <UserIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
@@ -63,14 +64,14 @@ const Signup: React.FC = () => {
                         onChange={(e) => setFirstname(e.target.value)}
                         required
                         className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                        placeholder="Enter your first name"
+                        placeholder={t('signup_firstname_placeholder')}
                     />
                 </div>
             </div>
             {/* Lastname */}
             <div className="mb-4 w-80">
                 <label htmlFor="lastname" className="block mb-1 font-medium dark:text-amber-50">
-                    Lastname
+                    {t('signup_lastname_label')}
                 </label>
                 <div className="relative">
                     <UserCircleIcon
@@ -82,14 +83,14 @@ const Signup: React.FC = () => {
                         onChange={(e) => setLastname(e.target.value)}
                         required
                         className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                        placeholder="Enter your last name"
+                        placeholder={t('signup_lastname_placeholder')}
                     />
                 </div>
             </div>
             {/* Email */}
             <div className="mb-4 w-80">
                 <label htmlFor="email" className="block mb-1 font-medium dark:text-amber-50">
-                    Email
+                    {t('signup_email_label')}
                 </label>
                 <div className="relative">
                     <EnvelopeIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
@@ -100,14 +101,14 @@ const Signup: React.FC = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                        placeholder="Enter your email"
+                        placeholder={t('signup_email_placeholder')}
                     />
                 </div>
             </div>
             {/* Password */}
             <div className="mb-6 w-80">
                 <label htmlFor="password" className="block mb-1 font-medium dark:text-amber-50">
-                    Password
+                    {t('signup_pwd_label')}
                 </label>
                 <div className="relative">
                     <LockClosedIcon
@@ -119,7 +120,7 @@ const Signup: React.FC = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                        placeholder="Enter your password"
+                        placeholder={t('signup_pwd_placeholder')}
                     />
                 </div>
             </div>
@@ -129,9 +130,9 @@ const Signup: React.FC = () => {
                 Signup
             </button>
             <p className="text-sm text-center dark:text-amber-50">
-                Already have an account ?{" "}
-                <Link to="/login" className="text-blue-600 hover:underline">
-                    Login here
+                {t('login_msg')}{" "}
+                <Link to="/login" className="text-blue-600 hover:underline ml-1">
+                    {t('login_link')}
                 </Link>
             </p>
             </div>
