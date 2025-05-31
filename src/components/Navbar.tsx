@@ -114,7 +114,7 @@ const Navbar: React.FC = () => {
                     {isOpen && (
                         <div className="md:hidden pb-4 space-y-2">
                             {isAuthenticated && user && (
-                                <Link to="/profile" className="flex items-center space-x-2 text-gray-700">
+                                <Link to="/profile" className="flex items-center space-x-2 text-gray-700 dark:text-amber-50">
                                     {user.avatarUrl ? (
                                         <img
                                             src={`${import.meta.env.VITE_API_BASE_URL}${user.avatarUrl}`}
@@ -129,10 +129,10 @@ const Navbar: React.FC = () => {
                             )}
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/home" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/home" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <HomeIcon className="h-4 w-4 mr-1" /> {t('home_link')}
                                     </Link>
-                                    <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline">
+                                    <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
                                         <Squares2X2Icon className="h-4 w-4 mr-1" /> {t('dash_link')}
                                     </Link>
                                     <button

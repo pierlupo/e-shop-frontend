@@ -7,6 +7,7 @@ export interface User {
     email: string;
     roles: Role[];
     avatarUrl: (string | null);
+    registrationDate: string;
     // cart?: Cart;
     // orders?: Order[];
 }

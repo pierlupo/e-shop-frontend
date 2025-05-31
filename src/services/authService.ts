@@ -19,7 +19,7 @@ export const validateToken = async () => {
     try {
         const token:string|null = localStorage.getItem('token');
         if (!token) return false;
-        const response = await apiClient.get(`${AUTH_API_URL}/validate`, {
+        const response = await apiClient.post(`${AUTH_API_URL}/validate`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

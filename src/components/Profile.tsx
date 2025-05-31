@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useTranslation} from "react-i18next";
+import type {Role} from "../interfaces/Role.ts";
 import Loader from "../components/Loader.tsx";
 import {useAuth} from "../hooks/UseAuth.ts";
 import {userService} from "../services/userService.ts";
@@ -108,10 +109,28 @@ const Profile: React.FC = () => {
         }
     };
 
+    const UserRolesDisplay = ({ roles }: { roles: Role[] }) => (
+        <div>
+            {roles.map(role => (
+                <span
+                    key={role.id}
+                    className="inline-block bg-gray-700 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold"
+                >
+        {role.name.replace('ROLE_', '')} {/* display just USER or ADMIN */}
+      </span>
+            ))}
+        </div>
+    );
+
+    const UserRegistrationInfo = ({ registrationDate }: { registrationDate: string }) => {
+        const formattedDate = new Date(registrationDate).toLocaleDateString();
+        return <div className="dark:text-amber-50 mt-2">{t('profile_registration_date')}{formattedDate}</div>;
+    };
+
     return (
         <LayoutWrapper className="dark:bg-gray-600">
             <div className="flex flex-col items-center ">
-            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('profile_title')}</h2>
+            <h1 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('profile_title')}</h1>
             <div className="space-y-4">
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
@@ -141,6 +160,13 @@ const Profile: React.FC = () => {
                             />
                         </label>
                     )}
+                    <div>
+                        <h3 className="font-bold dark:text-amber-50 mb-2">{`${formData.firstname} ${formData.lastname}`}</h3>
+                        <UserRolesDisplay roles={formData.roles} />
+                        {user.registrationDate && (
+                            <UserRegistrationInfo registrationDate={user.registrationDate} />
+                        )}
+                    </div>
                 </div>
                 <div>
                     <label className="block font-semibold dark:text-amber-50">{t('profile_firstname_label')}</label>

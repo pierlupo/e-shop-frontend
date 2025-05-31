@@ -66,5 +66,7 @@
   "dash_title": "Dashboard",
   "welcome_dash_msg": "Welcome to your dashboard!",
   "help_title": "Help page",
-  "assistance_msg": "If you need assistance, please contact support@example.com."
+  "assistance_msg": "If you need assistance, please contact support@example.com.",
+  "profile_registration_date": "Member since "
+
 }
