@@ -52,6 +52,8 @@
   "profile_new_pwd": "Nouveau Mot de passe",
   "profile_confirm_new_pwd": "Confirmer Nouveau Mot de passe",
   "profile_change_pwd_btn": "Changer Mot de passe",
+  "profile_change_pwd_success": "Mot de passe changé!",
+  "profile_change_pwd_error": "Mot de passe saisi incorrect!",
   "all_rights_footer": "Tous droits réservés.",
   "home_link_footer": "Accueil",
   "about_link_footer": "À-propos",

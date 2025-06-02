@@ -30,12 +30,10 @@ const Login: React.FC = () => {
             navigate("/home");
         } catch (error) {
             if (isAxiosError(error)) {
-                console.log(error);
                 const backendMessageRaw = error.response?.data?.message;
                 // Map English backend message to localized translation
                 const backendMessage =
                     backendMessageRaw === 'Bad credentials' ? t('default_error_msg') : backendMessageRaw || t('default_error_msg');
-
                 const message = `${backendMessage}\n${t('login_err_msg')}`;
                 toast.error(message);
                 setError(message);

@@ -1,4 +1,6 @@
+import {isAxiosError} from "axios";
 import React, {useState, useEffect} from "react";
+import {toast} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 import type {Role} from "../interfaces/Role.ts";
 import Loader from "../components/Loader.tsx";
@@ -77,23 +79,30 @@ const Profile: React.FC = () => {
                 setPasswordMessage("Passwords do not match.");
                 return;
             }
-
             try {
                 await userService.changePassword(user!.id, {
                     currentPassword,
                     newPassword,
                 });
+                toast.success(t('profile_change_pwd_success'));
                 setPasswordMessage("Password updated successfully.");
                 setCurrentPassword("");
                 setNewPassword("");
                 setConfirmPassword("");
-            } catch (err) {
-                console.error(err);
-                setPasswordMessage("Failed to update password.");
+            } catch (error) {
+                if (isAxiosError(error)) {
+                    const backendMessageRaw = error.response?.data?.message;
+                    // Map English backend message to localized translation
+                    const backendMessage =
+                        backendMessageRaw === 'Current password is incorrect' ? t('profile_change_pwd_error') : backendMessageRaw || t('profile_change_pwd_error');
+                    const message = `${backendMessage}\n${t('login_err_msg')}`;
+                    toast.error(message);
+                    setPasswordMessage("Failed to update password.");
+                }
             }
         }
-        setIsConfirmDialogOpen(false);
-        setDialogContext(null);
+            setIsConfirmDialogOpen(false);
+            setDialogContext(null);
     };
 
     const handleCancel = () => {

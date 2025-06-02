@@ -52,6 +52,8 @@
   "profile_new_pwd": "New Password",
   "profile_confirm_new_pwd": "Confirm New Password",
   "profile_change_pwd_btn": "Change Password",
+  "profile_change_pwd_success": "Password changed succesfully!",
+  "profile_change_pwd_error": "Current password is incorrect",
   "all_rights_footer": "All rights reserved.",
   "home_link_footer": "Home",
   "about_link_footer": "About",

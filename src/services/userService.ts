@@ -7,6 +7,7 @@ export const userService = {
         const response = await apiClient.get(`${USERS_API_URL}/user/${userId}`);
         return response.data.data;
     },
+
     createUser: async (userData: Partial<User>): Promise<User> => {
         const response = await apiClient.post(`${USERS_API_URL}/add`, userData);
         return response.data.data;
@@ -15,12 +16,13 @@ export const userService = {
         const response = await apiClient.put(`${USERS_API_URL}/${userId}/update`, userData);
         return response.data.data;
     },
+
     deleteUser: async (userId: number): Promise<void> => {
         await apiClient.delete(`${USERS_API_URL}/${userId}/delete`);
     },
 
-    changePassword: async (id: number, data: { currentPassword: string; newPassword: string }) => {
-        const response = await apiClient.put(`${USERS_API_URL}/users/${id}/password`, data);
+    changePassword: async (userId: number, data: { currentPassword: string; newPassword: string }) => {
+        const response =  await apiClient.put(`${USERS_API_URL}/${userId}/change-password`, data);
         return response.data.data;
     },
 
