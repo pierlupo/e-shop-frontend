@@ -1,3 +1,4 @@
+import {EyeIcon, EyeSlashIcon} from "@heroicons/react/24/outline/index";
 import { isAxiosError} from "axios";
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const {login} = useAuth();
@@ -80,13 +82,22 @@ const Login: React.FC = () => {
                     <LockClosedIcon className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"/>
                     <input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                         placeholder={t('login_pwd_placeholder')}
                     />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        aria-label="Toggle password visibility"
+                        title="Show/Hide password"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors duration-150"
+                    >
+                        {showPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
+                    </button>
                 </div>
             </div>
             <button
