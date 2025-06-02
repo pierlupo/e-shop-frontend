@@ -30,7 +30,7 @@ const App: React.FC = () => {
                 {/*<Header />*/}
                 <CustomToaster />
                 {/* Main content fills available space */}
-                <main className="flex-grow flex items-center justify-center dark:bg-gray-700">
+                <main className="flex-grow flex items-center justify-center bg-gray-300  dark:bg-gray-700">
                 <ErrorBoundary fallback={<div>Something went wrong...! :/</div>}>
                     <Suspense fallback={<Loader />}>
                         <Routes>
@@ -50,4 +50,5 @@ const App: React.FC = () => {
             </>
     );
 };
+
 export default App;

@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
     const handleLogout = () => {
         logout();
-        toast.success(`${t('logout_success_toast_msg')}\n${user?.firstname || "user"} — 👋` );
+        toast.success(`${t('logout_success_toast_msg')}\n${t('Goodbye_msg', { name: user?.firstname })}`);
         navigate("/login");
     };
 

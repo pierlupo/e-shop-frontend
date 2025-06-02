@@ -114,7 +114,7 @@ const Profile: React.FC = () => {
             {roles.map(role => (
                 <span
                     key={role.id}
-                    className="inline-block bg-gray-700 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold"
+                    className="inline-block bg-gray-300 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold"
                 >
         {role.name.replace('ROLE_', '')} {/* display just USER or ADMIN */}
       </span>
@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
         <LayoutWrapper className="dark:bg-gray-600">
             <div className="flex flex-col items-center ">
             <h1 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('profile_title')}</h1>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-4">
                 <div className="mb-6 flex items-center space-x-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300">
                         {avatarPreview ? (
@@ -161,8 +161,10 @@ const Profile: React.FC = () => {
                         </label>
                     )}
                     <div>
-                        <h3 className="font-bold dark:text-amber-50 mb-2">{`${formData.firstname} ${formData.lastname}`}</h3>
+                        <h3 className="font-bold  dark:text-amber-50 mb-2">{`${formData.firstname}`}</h3>
+                        <div>
                         <UserRolesDisplay roles={formData.roles} />
+                        </div>
                         {user.registrationDate && (
                             <UserRegistrationInfo registrationDate={user.registrationDate} />
                         )}

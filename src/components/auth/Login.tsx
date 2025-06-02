@@ -26,7 +26,7 @@ const Login: React.FC = () => {
             const user = response.data.user;
             const token = response.data.token;
             login(token, user);
-            toast.success(`${t('login_succeeded')}\n${t('welcome_msg', { name: user.firstname })} — 👌`);
+            toast.success(`${t('login_succeeded')}\n${t('welcome_msg', { name: user.firstname })}`);
             navigate("/home");
         } catch (error) {
             if (isAxiosError(error)) {

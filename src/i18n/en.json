@@ -4,17 +4,18 @@
   "label": "Language"
   },
   "title": "E-Shop",
+  "home_link": "Home",
   "tooltip_profile": "Edit your profile",
   "tooltip_darkMode": "Toggle dark mode",
-  "welcome_msg": "Welcome {{name}}",
+  "welcome_msg": "Welcome {{name}} !",
+  "Goodbye_msg":"Bye bye {{name}} !",
   "default_error_msg": "Bad credentials.",
-  "home_link": "Home",
   "dash_link": "Dashboard",
   "logout_btn": "Logout",
   "logout_title": "Confirm Logout",
   "logout_msg": "Are you sure you want to log out ?",
-  "login_succeeded": "Login succeeded",
-  "logout_success_toast_msg": "Logout succeeded - Bye ",
+  "login_succeeded": "Login succeeded  — \uD83D\uDC4C",
+  "logout_success_toast_msg": "Logout succeeded — \uD83D\uDC4B",
   "login_link_nav": "Login",
   "signup_link_nav": "Signup",
   "login_err_msg": "Please try again !",
@@ -37,7 +38,7 @@
   "signup_pwd_placeholder": "Enter your password",
   "login_msg": "Already have an account ?",
   "login_link": "Login here",
-  "profile_title": "My Profile",
+  "profile_title": "My profile",
   "profile_no_avatar": "No Avatar",
   "profile_upload_avatar": "Upload Avatar",
   "profile_firstname_label": "Firstname",
@@ -68,5 +69,4 @@
   "help_title": "Help page",
   "assistance_msg": "If you need assistance, please contact support@example.com.",
   "profile_registration_date": "Member since "
-
 }
