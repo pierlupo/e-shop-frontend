@@ -169,6 +169,16 @@ const Profile: React.FC = () => {
         return <div className="dark:text-amber-50 mt-2">{t('profile_registration_date')}{formattedDate}</div>;
     };
 
+    const handleSendVerificationEmail = async () => {
+        try {
+            await userService.sendVerificationEmail(user.id);
+            toast.success("Verification email sent!");
+        } catch (err) {
+            console.error(err);
+            toast.error("Could not send verification email.");
+        }
+    };
+
     return (
         <LayoutWrapper className="dark:bg-gray-600">
             <div className="flex flex-col items-center">
@@ -268,137 +278,156 @@ const Profile: React.FC = () => {
                                 className="w-full pl-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
-                    </div>
-                </div>
-                {/* Buttons */}
-                <div className="mt-6 flex space-x-4">
-                    {isEditing ? (
-                        <>
+                        {/* Email Verification Status */}
+                        <p className="mt-1 text-start dark:text-amber-50 w-80">
+                            <span className="font-semibold dark:text-amber-50">{t('profile_email_verif_label')}</span>{" "}
+                            {user.isEmailVerified ? (
+                            <span className="text-green-600 font-semibold inline-flex items-center gap-1 ml-2">
+                            <span className="text-base mr-2">✅</span> Yes
+                            </span>
+                            ) : (
+                            <span className="text-red-600 font-semibold inline-flex items-center gap-1 ml-2">
+                            <span className="text-base mr-2">❌</span> No
                             <button
-                                onClick={() => {
-                                    setDialogContext("save");
-                                    setIsConfirmDialogOpen(true);
-                                }}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                disabled={isLoading}
+                                  onClick={handleSendVerificationEmail}
+                                  className="ml-2 px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
                             >
-                                {isLoading ? "Saving..." : t('profile_save_changes_btn')}
+                                Send verification
                             </button>
-                            <button
-                                onClick={() => {
-                                    setFormData(user); // reset changes
-                                    setIsEditing(false);
-                                    setMessage("");
-                                }}
-                                className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
-                                disabled={isLoading}
-                            >
-                                {t('profile_cancel_btn')}
-                            </button>
-                        </>
-                    ) : (
+                            </span>
+                            )}
+                        </p>
+                        </div>
+                        </div>
+                        {/* Buttons */}
+                        <div className="mt-6 flex space-x-4">
+                            {isEditing ? (
+                                <>
+                                    <button
+                                        onClick={() => {
+                                            setDialogContext("save");
+                                            setIsConfirmDialogOpen(true);
+                                        }}
+                                        className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? "Saving..." : t('profile_save_changes_btn')}
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setFormData(user); // reset changes
+                                            setIsEditing(false);
+                                            setMessage("");
+                                        }}
+                                        className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                                        disabled={isLoading}
+                                    >
+                                        {t('profile_cancel_btn')}
+                                    </button>
+                                </>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        setIsEditing(true);
+                                        setPasswordMessage("");
+                                        setMessage("");
+                                        setError("");}}
+                                    className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                >
+                                    <PencilSquareIcon className="w-5 h-5 text-white" />
+                                    {t('profile_edit_btn')}
+                                </button>
+                            )}
+                        </div>
+                        <div className="mt-10 border-t pt-6">
+                            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('change_pwd_title')}</h2>
+                            <div className="relative mb-4 w-80">
+                                <label className="block font-semibold dark:text-amber-50">{t('profile_current_pwd')}</label>
+                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                                <input
+                                    type={showCurrentPassword ? "text" : "password"}
+                                    name="currentPassword"
+                                    value={currentPassword}
+                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                                    placeholder={t('signup_pwd_placeholder')}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowCurrentPassword(prev => !prev)}
+                                    aria-label="Toggle password visibility"
+                                    title="Show/Hide password"
+                                    className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
+                                >
+                                    {showCurrentPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
+                                </button>
+                            </div>
+                            <div className="relative mb-4 w-80">
+                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                                <label className="block font-semibold dark:text-amber-50">{t('profile_new_pwd')}</label>
+                                <input
+                                    type={showNewPassword ? "text" : "password"}
+                                    name="newPassword"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                                    placeholder={t('profile_new_pwd')}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowNewPassword((prev) => !prev)}
+                                    aria-label="Toggle new password visibility"
+                                    className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
+                                >
+                                    {showNewPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                                </button>
+                            </div>
+                            <div className="relative mb-4 w-80">
+                                <label className="block font-semibold dark:text-amber-50">{t('profile_confirm_new_pwd')}</label>
+                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                                <input
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    name="confirmPassword"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                                    placeholder={t('signup_confirm_pwd_placeholder')}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(prev => !prev)}
+                                    aria-label="Toggle confirmed password visibility"
+                                    title="Show/Hide password"
+                                    className="absolute right-3 top-11 -translate-y-1/2 text-gray-400 transition-colors duration-150"
+                                >
+                                    {showConfirmPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
+                                </button>
+                            </div>
+                        </div>
                         <button
                             onClick={() => {
-                                setIsEditing(true);
-                                setPasswordMessage("");
-                                setMessage("");
-                                setError("");}}
-                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                setDialogContext("password");
+                                setIsConfirmDialogOpen(true);
+                            }}
+                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 mt-6"
+                            disabled={isLoading}
                         >
-                            <PencilSquareIcon className="w-5 h-5 text-white" />
-                            {t('profile_edit_btn')}
+                            <LockClosedIcon className="w-5 h-5 text-white"/>
+                            {isLoading ? "Updating..." : t('profile_change_pwd_btn')}
                         </button>
-                    )}
-                </div>
-                <div className="mt-10 border-t pt-6">
-                    <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('change_pwd_title')}</h2>
-                    <div className="relative mb-4 w-80">
-                        <label className="block font-semibold dark:text-amber-50">{t('profile_current_pwd')}</label>
-                        <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                        <input
-                            type={showCurrentPassword ? "text" : "password"}
-                            name="currentPassword"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                            placeholder={t('signup_pwd_placeholder')}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowCurrentPassword(prev => !prev)}
-                            aria-label="Toggle password visibility"
-                            title="Show/Hide password"
-                            className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
-                        >
-                            {showCurrentPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
-                        </button>
-                    </div>
-                    <div className="relative mb-4 w-80">
-                        <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                        <label className="block font-semibold dark:text-amber-50">{t('profile_new_pwd')}</label>
-                        <input
-                            type={showNewPassword ? "text" : "password"}
-                            name="newPassword"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                            placeholder={t('profile_new_pwd')}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowNewPassword((prev) => !prev)}
-                            aria-label="Toggle new password visibility"
-                            className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
-                        >
-                            {showNewPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
-                        </button>
-                    </div>
-                    <div className="relative mb-4 w-80">
-                        <label className="block font-semibold dark:text-amber-50">{t('profile_confirm_new_pwd')}</label>
-                        <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                        <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            name="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                            placeholder={t('signup_confirm_pwd_placeholder')}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowConfirmPassword(prev => !prev)}
-                            aria-label="Toggle confirmed password visibility"
-                            title="Show/Hide password"
-                            className="absolute right-3 top-11 -translate-y-1/2 text-gray-400 transition-colors duration-150"
-                        >
-                            {showConfirmPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
-                        </button>
-                    </div>
-                </div>
-                <button
-                    onClick={() => {
-                        setDialogContext("password");
-                        setIsConfirmDialogOpen(true);
-                    }}
-                    className="w-80 flex items-center gap-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-blue-600 mt-6"
-                    disabled={isLoading}
-                >
-                    <LockClosedIcon className="w-5 h-5 text-white"/>
-                    {isLoading ? "Updating..." : t('profile_change_pwd_btn')}
-                </button>
-                </div>
-            <ConfirmationDialog
-                isOpen={isConfirmDialogOpen}
-                title={dialogContext === "save" ? t("profile_dialog_title") : t("profile_confirm_dialog_pwd_title")}
-                message={
-                    dialogContext === "save"
-                        ? t("profile_confirm_dialog_subject")
-                        : t("profile_change_pwd_dialog")
-                }
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-            />
-            </LayoutWrapper>
+                        </div>
+                    <ConfirmationDialog
+                        isOpen={isConfirmDialogOpen}
+                        title={dialogContext === "save" ? t("profile_dialog_title") : t("profile_confirm_dialog_pwd_title")}
+                        message={
+                            dialogContext === "save"
+                                ? t("profile_confirm_dialog_subject")
+                                : t("profile_change_pwd_dialog")
+                        }
+                        onConfirm={handleConfirm}
+                        onCancel={handleCancel}
+                    />
+                    </LayoutWrapper>
     );
 };
 

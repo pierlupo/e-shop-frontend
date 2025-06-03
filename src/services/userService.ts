@@ -1,5 +1,5 @@
 import apiClient from "../utils/apiClient.ts";import type {User} from "../interfaces/User";
-import { USERS_API_URL } from "../config/config";
+import {AUTH_API_URL, USERS_API_URL} from "../config/config";
 
 export const userService = {
 
@@ -33,6 +33,10 @@ export const userService = {
             `${USERS_API_URL}/${userId}/avatar`, formData
         );
         return response.data.data;
-    }
+    },
+
+    sendVerificationEmail: async (userId: number): Promise<void> => {
+        await apiClient.post(`${AUTH_API_URL}/${userId}/verify-email`);
+    },
 
 };

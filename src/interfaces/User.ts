@@ -10,4 +10,5 @@ export interface User {
     registrationDate: string;
     // cart?: Cart;
     // orders?: Order[];
+    isEmailVerified: boolean;
 }

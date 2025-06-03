@@ -47,6 +47,7 @@
   "profile_firstname_label": "Firstname",
   "profile_lastname_label": "Lastname",
   "profile_email_label": "Email",
+  "profile_email_verif_label": "Email verified",
   "profile_save_changes_btn": "Save Changes",
   "profile_cancel_btn": "Cancel",
   "profile_edit_btn": "Edit",

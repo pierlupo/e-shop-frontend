@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
                                     ) : (
                                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
                                     )}
-                                    <span className="hidden sm:inline">{t('welcome_msg', { name: user.firstname })}{" "} !</span>
+                                    <span className="hidden sm:inline">{t('welcome_msg', { name: user.firstname })}{" "}</span>
                                     <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
              bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
              transition-all duration-200 whitespace-nowrap z-10">
