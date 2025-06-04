@@ -39,4 +39,9 @@ export const userService = {
         await apiClient.post(`${AUTH_API_URL}/${userId}/verify-email`);
     },
 
+    getCurrentUser: async (): Promise<User> => {
+        const response = await apiClient.get(`${USERS_API_URL}/me`);
+        return response.data.data;
+    },
+
 };

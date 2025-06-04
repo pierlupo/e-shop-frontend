@@ -281,18 +281,18 @@ const Profile: React.FC = () => {
                         {/* Email Verification Status */}
                         <p className="mt-1 text-start dark:text-amber-50 w-80">
                             <span className="font-semibold dark:text-amber-50">{t('profile_email_verif_label')}</span>{" "}
-                            {user.isEmailVerified ? (
+                            {user.emailVerified ? (
                             <span className="text-green-600 font-semibold inline-flex items-center gap-1 ml-2">
-                            <span className="text-base mr-2">✅</span> Yes
+                            <span className="text-base mr-2">✅</span> {t('profile_email_verif_yes')}
                             </span>
                             ) : (
                             <span className="text-red-600 font-semibold inline-flex items-center gap-1 ml-2">
-                            <span className="text-base mr-2">❌</span> No
+                            <span className="text-base mr-2">❌</span> {t('profile_email_verif_no')}
                             <button
                                   onClick={handleSendVerificationEmail}
                                   className="ml-2 px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
                             >
-                                Send verification
+                                {t('profile_email_verif_btn')}
                             </button>
                             </span>
                             )}
@@ -377,6 +377,7 @@ const Profile: React.FC = () => {
                                     type="button"
                                     onClick={() => setShowNewPassword((prev) => !prev)}
                                     aria-label="Toggle new password visibility"
+                                    title="Show/Hide password"
                                     className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
                                 >
                                     {showNewPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}

@@ -43,7 +43,7 @@ const Signup: React.FC = () => {
         }
         try {
             await signupService({firstname, lastname, email, password});
-            toast.success("Signup successful! You can now log in.");
+            toast.success("Signup successful! Please verify your email.");
             navigate("/login");
             setSuccess(""); // not needed anymore unless redirection wanted
         } catch (error) {
