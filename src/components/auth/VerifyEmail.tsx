@@ -1,23 +1,25 @@
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import {toast} from "react-hot-toast";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import apiClient from "../../utils/apiClient.ts";
 import {AUTH_API_URL} from "../../config/config";
 
-
 export default function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const hasRun = useRef(false);
 
     useEffect(() => {
-        const token = searchParams.get('token');
+        if (hasRun.current) return;
+        hasRun.current = true;
+        const token = searchParams.get("token");
         if (!token) {
             toast.error("Missing verification token.");
             navigate("/login");
             return;
         }
-
-        apiClient.post(`${AUTH_API_URL}/verify-email?token=${token}`)
+        apiClient
+            .post(`${AUTH_API_URL}/verify-email?token=${token}`)
             .then(() => {
                 toast.success("Email verified, you may now log in.");
             })
@@ -29,6 +31,5 @@ export default function VerifyEmail() {
             });
     }, [navigate, searchParams]);
 
-    return null; // or <></> for React fragment
+    return null;
 }
-

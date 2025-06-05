@@ -108,10 +108,13 @@ const Login: React.FC = () => {
             </button>
             <p className="text-sm text-center dark:text-amber-50">
                 {t('signup_msg')}{" "}
-                <Link to="/signup" className="text-blue-600 hover:underline ml-1">
+                <Link to="/signup" className="text-blue-500 hover:underline ml-1">
                     {t('signup_link')}
                 </Link>
             </p>
+                <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
+                    {t('forgotten_pwd')}
+                </Link>
             </div>
         </form>
             </LayoutWrapper>

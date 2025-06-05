@@ -173,11 +173,11 @@ const Signup: React.FC = () => {
                     <button
                         type="submit"
                         className="w-80 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4">
-                        Signup
+                        {t('signup_btn')}
                     </button>
                     <p className="text-sm text-center dark:text-amber-50">
                         {t('login_msg')}{" "}
-                        <Link to="/login" className="text-blue-600 hover:underline ml-1">
+                        <Link to="/login" className="text-blue-500 hover:underline ml-1">
                             {t('login_link')}
                         </Link>
                     </p>
