@@ -1,5 +1,6 @@
 import React from "react";
 import {Route} from "react-router-dom";
+import Unauthorized from "../components/Unauthorized.tsx";
 import ForgotPassword from "../components/auth/ForgotPassword.tsx";
 import ResetPassword from "../components/auth/ResetPassword.tsx";
 import VerifyEmail from "../components/auth/VerifyEmail.tsx";
@@ -8,6 +9,7 @@ import HelpPage from "../components/HelpPage.tsx";
 const PublicRoutes = (): React.ReactElement => (
     <>
         <Route path="/help" element={<HelpPage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/verify-email" element={<VerifyEmail />}/>
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

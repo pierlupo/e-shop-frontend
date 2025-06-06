@@ -10,8 +10,11 @@ import {Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, 
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useDarkMode } from '../hooks/UseDarkMode';
 
+interface NavbarProps {
+    setAdminDrawerOpen: (open: boolean) => void;
+}
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
     const {isAuthenticated, logout, user} = useAuth();
     const navigate = useNavigate();
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -38,7 +41,8 @@ const Navbar: React.FC = () => {
                         </Link>
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-4">
-                            {isAuthenticated && user && (
+                            {isAuthenticated && user &&(
+                                <>
                                 <Link to="/profile" className="relative group flex items-center space-x-2 text-gray-700 dark:text-amber-50">
                                     {user.avatarUrl ? (
                                         <img
@@ -56,6 +60,16 @@ const Navbar: React.FC = () => {
                                         {t('tooltip_profile')}
                                     </span>
                                 </Link>
+                                {user.roles.some(role => role.name === "ROLE_ADMIN") && (
+                                    <button
+                                        onClick={() => setAdminDrawerOpen(true)}
+                                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                        title="Open Admin Panel"
+                                    >
+                                        Admin
+                                    </button>
+                                )}
+                                </>
                             )}
                             {isAuthenticated ? (
                                 <>

@@ -2,6 +2,7 @@ import {EnvelopeIcon} from "@heroicons/react/24/outline/index";
 import React, {useState} from "react";
 import {toast} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 import LayoutWrapper from "../../components/LayoutWrapper.tsx";
 import apiClient from "../../utils/apiClient.ts";
 import {USERS_API_URL} from "../../config/config";
@@ -56,6 +57,12 @@ export default function ForgotPassword() {
                 >
                     {t('forgotten_pwd_send_link_btn')}
                 </button>
+                <p className="text-sm text-center dark:text-amber-50">
+                    {t('login_msg')}{" "}
+                    <Link to="/login" className="text-blue-500 hover:underline ml-1">
+                        {t('login_link')}
+                    </Link>
+                </p>
         </div>
          </form>
         </LayoutWrapper>

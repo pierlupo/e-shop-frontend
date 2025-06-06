@@ -208,7 +208,6 @@ const Profile: React.FC = () => {
                                 </div>
                             )}
                         </div>
-
                         {(isEditing) && (
                             <label
                                 htmlFor="avatarUpload"
@@ -226,7 +225,6 @@ const Profile: React.FC = () => {
                                 />
                             </label>
                         )}
-
                         <div className="text-center">
                             <h3 className="font-bold dark:text-amber-50 mb-1">{formData.firstname}</h3>
                             <UserRolesDisplay roles={formData.roles} />
@@ -250,7 +248,6 @@ const Profile: React.FC = () => {
                                 className="w-full pl-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
-
                         {/* Lastname */}
                         <div className="relative w-80">
                             <UserCircleIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
@@ -264,7 +261,6 @@ const Profile: React.FC = () => {
                                 className="w-full pl-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
-
                         {/* Email */}
                         <div className="relative w-80">
                             <EnvelopeIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
