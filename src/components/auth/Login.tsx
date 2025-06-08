@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {login as loginService} from "../../services/authService.ts";
 import {Link, useNavigate} from "react-router-dom";
-import {useAuth} from "../../hooks/UseAuth.ts";
+import {useAuth} from "../../hooks/useAuth.ts";
 import {EnvelopeIcon, LockClosedIcon} from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast';
 import LayoutWrapper from "../LayoutWrapper";

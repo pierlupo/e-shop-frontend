@@ -4,7 +4,7 @@ import {toast} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 import type {Role} from "../interfaces/Role.ts";
 import Loader from "../components/Loader.tsx";
-import {useAuth} from "../hooks/UseAuth.ts";
+import {useAuth} from "../hooks/useAuth.ts";
 import {userService} from "../services/userService.ts";
 import type {User} from "../interfaces/User";
 import {

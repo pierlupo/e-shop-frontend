@@ -5,10 +5,10 @@ import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
 import {LanguageDropdown} from "./LanguageDropDown.tsx";
 
-import {useAuth} from "../hooks/UseAuth.ts";
+import {useAuth} from "../hooks/useAuth.ts";
 import {Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { useDarkMode } from '../hooks/UseDarkMode';
+import { useDarkMode } from '../hooks/useDarkMode.ts';
 
 interface NavbarProps {
     setAdminDrawerOpen: (open: boolean) => void;
@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                         <div className="hidden md:flex items-center space-x-4">
                             {isAuthenticated && user &&(
                                 <>
-                                <Link to="/profile" className="relative group flex items-center space-x-2 text-gray-700 dark:text-amber-50">
+                                <Link to="/profile" className="relative group flex items-center font-semibold hover:underline space-x-2 text-gray-700 dark:text-amber-50">
                                     {user.avatarUrl ? (
                                         <img
                                             src={`${import.meta.env.VITE_API_BASE_URL}${user.avatarUrl}`}
@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                                     ) : (
                                         <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150" />
                                     )}
-                                    <span className="hidden sm:inline">{t('welcome_msg', { name: user.firstname })}{" "}</span>
+                                    <span className="hidden sm:inline font-semibold">{t('welcome_msg', { name: user.firstname })}{" "}</span>
                                     <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
              bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
              transition-all duration-200 whitespace-nowrap z-10">
@@ -73,10 +73,10 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                             )}
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/home" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
+                                    <Link to="/home" className="flex items-center font-semibold text-gray-700 hover:underline dark:text-amber-50">
                                         <HomeIcon className="h-4 w-4 mr-1" /> {t('home_link')}
                                     </Link>
-                                    <Link to="/dashboard" className="flex items-center text-gray-700 hover:underline dark:text-amber-50">
+                                    <Link to="/dashboard" className="flex items-center font-semibold text-gray-700 hover:underline dark:text-amber-50">
                                         <Squares2X2Icon className="h-4 w-4 mr-1" /> {t('dash_link')}
                                     </Link>
                                     <button
@@ -84,9 +84,11 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title={t('tooltip_darkMode')}
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-300" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
-                                    <LanguageDropdown />
+                                    <div className="z-50 font-semibold">
+                                    <LanguageDropdown/>
+                                    </div>
                                     <button
                                         onClick={() => setShowLogoutConfirm(true)}
                                         className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"

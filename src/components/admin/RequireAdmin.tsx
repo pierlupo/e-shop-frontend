@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigate} from "react-router-dom";
-import {useAuth} from "../../hooks/UseAuth.ts";
+import {useAuth} from "../../hooks/useAuth.ts";
 
 
 const RequireAdmin = ({ children }: { children: React.ReactElement }) => {
