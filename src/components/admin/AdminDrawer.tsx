@@ -62,7 +62,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ isOpen, onClose }) => {
                             </button>
                         </div>
                         <nav className="space-y-3">
-                            <Link to="/admin/users" className="flex items-center hover:underline"><UsersIcon className="w-5 h-5 mr-3" /><span className="font-semibold">Users</span></Link>
+                            <Link to="/admin/users" className="flex items-center hover:underline"><UsersIcon className="w-5 h-5 mr-3" /><span className="font-semibold ">Users</span></Link>
                             <Link to="/admin/products" className="flex items-center hover:underline "><CubeIcon className="w-5 h-5 mr-3" /><span className="font-semibold">Products</span></Link>
                             <Link to="/admin/orders" className="flex items-cente hover:underline r"><ShoppingBagIcon className="w-5 h-5 mr-3" /><span className="font-semibold">Orders</span></Link>
                         </nav>

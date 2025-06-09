@@ -4,17 +4,17 @@ import {toast} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
 import {LanguageDropdown} from "./LanguageDropDown.tsx";
-
 import {useAuth} from "../hooks/useAuth.ts";
 import {Squares2X2Icon, UserIcon, UserPlusIcon, Bars3Icon, XMarkIcon, MoonIcon, SunIcon} from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useDarkMode } from '../hooks/useDarkMode.ts';
 
 interface NavbarProps {
+    isAdminDrawerOpen:boolean;
     setAdminDrawerOpen: (open: boolean) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
+const Navbar: React.FC<NavbarProps> = ({ isAdminDrawerOpen, setAdminDrawerOpen }) =>  {
     const {isAuthenticated, logout, user} = useAuth();
     const navigate = useNavigate();
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -62,9 +62,9 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                                 </Link>
                                 {user.roles.some(role => role.name === "ROLE_ADMIN") && (
                                     <button
-                                        onClick={() => setAdminDrawerOpen(true)}
+                                        onClick={() => setAdminDrawerOpen(!isAdminDrawerOpen)}
                                         className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                                        title="Open Admin Panel"
+                                        title="Toggle Admin Panel"
                                     >
                                         Admin
                                     </button>
@@ -109,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = ({ setAdminDrawerOpen }) =>  {
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title={t('tooltip_darkMode')}
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-300" /> : <MoonIcon className="w-5 h-5 text-gray-700" />}
                                     </button>
                                     <LanguageDropdown />
                                 </>
