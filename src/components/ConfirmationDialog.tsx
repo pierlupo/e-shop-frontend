@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import {Description, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import {ExclamationTriangleIcon} from '@heroicons/react/24/outline';
 import {useTranslation} from "react-i18next";
 
 interface ConfirmationDialogProps {
@@ -48,12 +48,15 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <DialogPanel className="bg-white dark:bg-gray-600 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 transition-all">
-                            <DialogTitle className="flex items-center justify-center gap-2 text-lg font-extrabold text-gray-900 dark:text-white">
-                                <ExclamationTriangleIcon className="h-9 w-9 text-red-500" />
+                        <DialogPanel
+                            className="bg-white dark:bg-gray-600 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 transition-all">
+                            <DialogTitle
+                                className="flex items-center justify-center gap-2 text-lg font-extrabold text-gray-900 dark:text-white">
+                                <ExclamationTriangleIcon className="h-9 w-9 text-red-500"/>
                                 {title}
                             </DialogTitle>
-                            <Description className="text-md text-gray-700 dark:text-gray-300 flex items-center justify-center">
+                            <Description
+                                className="text-md text-gray-700 dark:text-gray-300 flex items-center justify-center">
                                 {message}
                             </Description>
                             <div className="flex justify-center space-x-2 pt-2">

@@ -1,10 +1,16 @@
-import apiClient from "../utils/apiClient.ts";import type {User} from "../interfaces/User";
+import apiClient from "../utils/apiClient.ts";
+import type {User} from "../interfaces/User";
 import {AUTH_API_URL, USERS_API_URL} from "../config/config";
 
 export const userService = {
 
     getUserById: async (userId: number): Promise<User> => {
         const response = await apiClient.get(`${USERS_API_URL}/user/${userId}`);
+        return response.data.data;
+    },
+
+    getAllUsers: async (): Promise<User[]> => {
+        const response = await apiClient.get(`${USERS_API_URL}/all`);
         return response.data.data;
     },
 
@@ -22,7 +28,7 @@ export const userService = {
     },
 
     changePassword: async (userId: number, data: { currentPassword: string; newPassword: string }) => {
-        const response =  await apiClient.put(`${USERS_API_URL}/${userId}/change-password`, data);
+        const response = await apiClient.put(`${USERS_API_URL}/${userId}/change-password`, data);
         return response.data.data;
     },
 

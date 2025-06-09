@@ -69,21 +69,21 @@ const Profile: React.FC = () => {
         }
     }, [avatarFile]);
 
-    if (!user || !formData) return <Loader />;
+    if (!user || !formData) return <Loader/>;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
     const handleSave = async () => {
         setIsLoading(true);
         try {
             if (!user || !user.id) return;
-            let updatedAvatarUrl:string|null = formData.avatarUrl;
+            let updatedAvatarUrl: string | null = formData.avatarUrl;
             if (avatarFile) {
                 updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
             }
-            const updatedUser:User = await userService.updateUser(user.id, {
+            const updatedUser: User = await userService.updateUser(user.id, {
                 ...formData,
                 avatarUrl: updatedAvatarUrl,
             });
@@ -98,7 +98,7 @@ const Profile: React.FC = () => {
         } catch (error) {
             console.error(t("profile_update_error_msg"), error);
             setMessage(t("profile_update_error_msg"));
-        }finally {
+        } finally {
             setIsLoading(false);
         }
     };
@@ -137,8 +137,8 @@ const Profile: React.FC = () => {
                 }
             }
         }
-            setIsConfirmDialogOpen(false);
-            setDialogContext(null);
+        setIsConfirmDialogOpen(false);
+        setDialogContext(null);
     };
 
     const handleCancel = () => {
@@ -154,17 +154,18 @@ const Profile: React.FC = () => {
         }
     };
 
-    const UserRolesDisplay = ({ roles }: { roles: Role[] }) => (
+    const UserRolesDisplay = ({roles}: { roles: Role[] }) => (
         <div>
             {roles.map(role => (
-                <span key={role.id} className="inline-block bg-gray-300 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold">
+                <span key={role.id}
+                      className="inline-block bg-gray-300 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold">
                     {role.name.replace('ROLE_', '')} {/* display just USER or ADMIN */}
                 </span>
             ))}
         </div>
     );
 
-    const UserRegistrationInfo = ({ registrationDate }: { registrationDate: string }) => {
+    const UserRegistrationInfo = ({registrationDate}: { registrationDate: string }) => {
         const formattedDate = new Date(registrationDate).toLocaleDateString();
         return <div className="dark:text-amber-50 mt-2">{t('profile_registration_date')}{formattedDate}</div>;
     };
@@ -203,7 +204,8 @@ const Profile: React.FC = () => {
                                     onError={() => setAvatarError(true)}
                                 />
                             ) : (
-                                <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
+                                <div
+                                    className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
                                     {t('profile_no_avatar')}
                                 </div>
                             )}
@@ -227,9 +229,9 @@ const Profile: React.FC = () => {
                         )}
                         <div className="text-center">
                             <h3 className="font-bold dark:text-amber-50 mb-1">{formData.firstname}</h3>
-                            <UserRolesDisplay roles={formData.roles} />
+                            <UserRolesDisplay roles={formData.roles}/>
                             {user.registrationDate && (
-                                <UserRegistrationInfo registrationDate={user.registrationDate} />
+                                <UserRegistrationInfo registrationDate={user.registrationDate}/>
                             )}
                         </div>
                     </div>
@@ -237,8 +239,10 @@ const Profile: React.FC = () => {
                     <div className="flex flex-col space-y-4 items-center">
                         {/* Firstname */}
                         <div className="relative w-80">
-                            <UserIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
-                            <label className="block font-semibold dark:text-amber-50">{t('profile_firstname_label')}</label>
+                            <UserIcon
+                                className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                            <label
+                                className="block font-semibold dark:text-amber-50">{t('profile_firstname_label')}</label>
                             <input
                                 type="text"
                                 name="firstname"
@@ -250,8 +254,10 @@ const Profile: React.FC = () => {
                         </div>
                         {/* Lastname */}
                         <div className="relative w-80">
-                            <UserCircleIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
-                            <label className="block font-semibold dark:text-amber-50">{t('profile_lastname_label')}</label>
+                            <UserCircleIcon
+                                className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                            <label
+                                className="block font-semibold dark:text-amber-50">{t('profile_lastname_label')}</label>
                             <input
                                 type="text"
                                 name="lastname"
@@ -263,7 +269,8 @@ const Profile: React.FC = () => {
                         </div>
                         {/* Email */}
                         <div className="relative w-80">
-                            <EnvelopeIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
+                            <EnvelopeIcon
+                                className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
                             <label className="block font-semibold dark:text-amber-50">{t('profile_email_label')}</label>
                             <input
                                 type="email"
@@ -276,155 +283,162 @@ const Profile: React.FC = () => {
                         </div>
                         {/* Email Verification Status */}
                         <p className="mt-1 text-start dark:text-amber-50 w-80">
-                            <span className="font-semibold dark:text-amber-50">{t('profile_email_verif_label')}</span>{" "}
+                            <span
+                                className="font-semibold dark:text-amber-50">{t('profile_email_verif_label')}</span>{" "}
                             {user.emailVerified ? (
-                            <span className="text-green-600 font-semibold inline-flex items-center gap-1 ml-2">
+                                <span className="text-green-600 font-semibold inline-flex items-center gap-1 ml-2">
                             <span className="text-base mr-2">✅</span> {t('profile_email_verif_yes')}
                             </span>
                             ) : (
-                            <span className="text-red-600 font-semibold inline-flex items-center gap-1 ml-2">
+                                <span className="text-red-600 font-semibold inline-flex items-center gap-1 ml-2">
                             <span className="text-base mr-2">❌</span> {t('profile_email_verif_no')}
-                            <button
-                                  onClick={handleSendVerificationEmail}
-                                  className="ml-2 px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
-                            >
+                                    <button
+                                        onClick={handleSendVerificationEmail}
+                                        className="ml-2 px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+                                    >
                                 {t('profile_email_verif_btn')}
                             </button>
                             </span>
                             )}
                         </p>
-                        </div>
-                        </div>
-                        {/* Buttons */}
-                        <div className="mt-6 flex space-x-4">
-                            {isEditing ? (
-                                <>
-                                    <button
-                                        onClick={() => {
-                                            setDialogContext("save");
-                                            setIsConfirmDialogOpen(true);
-                                        }}
-                                        className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                        disabled={isLoading}
-                                    >
-                                        {isLoading ? "Saving..." : t('profile_save_changes_btn')}
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            setFormData(user); // reset changes
-                                            setIsEditing(false);
-                                            setMessage("");
-                                        }}
-                                        className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
-                                        disabled={isLoading}
-                                    >
-                                        {t('profile_cancel_btn')}
-                                    </button>
-                                </>
-                            ) : (
-                                <button
-                                    onClick={() => {
-                                        setIsEditing(true);
-                                        setPasswordMessage("");
-                                        setMessage("");
-                                        setError("");}}
-                                    className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                                >
-                                    <PencilSquareIcon className="w-5 h-5 text-white" />
-                                    {t('profile_edit_btn')}
-                                </button>
-                            )}
-                        </div>
-                        <div className="mt-10 border-t pt-6">
-                            <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('change_pwd_title')}</h2>
-                            <div className="relative mb-4 w-80">
-                                <label className="block font-semibold dark:text-amber-50">{t('profile_current_pwd')}</label>
-                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                                <input
-                                    type={showCurrentPassword ? "text" : "password"}
-                                    name="currentPassword"
-                                    value={currentPassword}
-                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                                    placeholder={t('signup_pwd_placeholder')}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowCurrentPassword(prev => !prev)}
-                                    aria-label="Toggle password visibility"
-                                    title="Show/Hide password"
-                                    className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
-                                >
-                                    {showCurrentPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
-                                </button>
-                            </div>
-                            <div className="relative mb-4 w-80">
-                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                                <label className="block font-semibold dark:text-amber-50">{t('profile_new_pwd')}</label>
-                                <input
-                                    type={showNewPassword ? "text" : "password"}
-                                    name="newPassword"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                                    placeholder={t('profile_new_pwd')}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowNewPassword((prev) => !prev)}
-                                    aria-label="Toggle new password visibility"
-                                    title="Show/Hide password"
-                                    className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
-                                >
-                                    {showNewPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
-                                </button>
-                            </div>
-                            <div className="relative mb-4 w-80">
-                                <label className="block font-semibold dark:text-amber-50">{t('profile_confirm_new_pwd')}</label>
-                                <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
-                                <input
-                                    type={showConfirmPassword ? "text" : "password"}
-                                    name="confirmPassword"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
-                                    placeholder={t('signup_confirm_pwd_placeholder')}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowConfirmPassword(prev => !prev)}
-                                    aria-label="Toggle confirmed password visibility"
-                                    title="Show/Hide password"
-                                    className="absolute right-3 top-11 -translate-y-1/2 text-gray-400 transition-colors duration-150"
-                                >
-                                    {showConfirmPassword ? (<EyeSlashIcon className="w-5 h-5" />) : (<EyeIcon className="w-5 h-5" />)}
-                                </button>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                {/* Buttons */}
+                <div className="mt-6 flex space-x-4">
+                    {isEditing ? (
+                        <>
+                            <button
+                                onClick={() => {
+                                    setDialogContext("save");
+                                    setIsConfirmDialogOpen(true);
+                                }}
+                                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? "Saving..." : t('profile_save_changes_btn')}
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setFormData(user); // reset changes
+                                    setIsEditing(false);
+                                    setMessage("");
+                                }}
+                                className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                                disabled={isLoading}
+                            >
+                                {t('profile_cancel_btn')}
+                            </button>
+                        </>
+                    ) : (
                         <button
                             onClick={() => {
-                                setDialogContext("password");
-                                setIsConfirmDialogOpen(true);
+                                setIsEditing(true);
+                                setPasswordMessage("");
+                                setMessage("");
+                                setError("");
                             }}
-                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 mt-6"
-                            disabled={isLoading}
+                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                         >
-                            <LockClosedIcon className="w-5 h-5 text-white"/>
-                            {isLoading ? "Updating..." : t('profile_change_pwd_btn')}
+                            <PencilSquareIcon className="w-5 h-5 text-white"/>
+                            {t('profile_edit_btn')}
                         </button>
-                        </div>
-                    <ConfirmationDialog
-                        isOpen={isConfirmDialogOpen}
-                        title={dialogContext === "save" ? t("profile_dialog_title") : t("profile_confirm_dialog_pwd_title")}
-                        message={
-                            dialogContext === "save"
-                                ? t("profile_confirm_dialog_subject")
-                                : t("profile_change_pwd_dialog")
-                        }
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}
-                    />
-                    </LayoutWrapper>
+                    )}
+                </div>
+                <div className="mt-10 border-t pt-6">
+                    <h2 className="text-2xl font-bold mb-4 dark:text-amber-50">{t('change_pwd_title')}</h2>
+                    <div className="relative mb-4 w-80">
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_current_pwd')}</label>
+                        <LockClosedIcon
+                            className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                        <input
+                            type={showCurrentPassword ? "text" : "password"}
+                            name="currentPassword"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                            placeholder={t('signup_pwd_placeholder')}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowCurrentPassword(prev => !prev)}
+                            aria-label="Toggle password visibility"
+                            title="Show/Hide password"
+                            className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
+                        >
+                            {showCurrentPassword ? (<EyeSlashIcon className="w-5 h-5"/>) : (
+                                <EyeIcon className="w-5 h-5"/>)}
+                        </button>
+                    </div>
+                    <div className="relative mb-4 w-80">
+                        <LockClosedIcon
+                            className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_new_pwd')}</label>
+                        <input
+                            type={showNewPassword ? "text" : "password"}
+                            name="newPassword"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                            placeholder={t('profile_new_pwd')}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowNewPassword((prev) => !prev)}
+                            aria-label="Toggle new password visibility"
+                            title="Show/Hide password"
+                            className="absolute right-3 top-11 transform -translate-y-1/2 text-gray-400"
+                        >
+                            {showNewPassword ? <EyeSlashIcon className="w-5 h-5"/> : <EyeIcon className="w-5 h-5"/>}
+                        </button>
+                    </div>
+                    <div className="relative mb-4 w-80">
+                        <label className="block font-semibold dark:text-amber-50">{t('profile_confirm_new_pwd')}</label>
+                        <LockClosedIcon
+                            className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400"/>
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full pl-10 pr-10 p-2 border rounded dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
+                            placeholder={t('signup_confirm_pwd_placeholder')}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(prev => !prev)}
+                            aria-label="Toggle confirmed password visibility"
+                            title="Show/Hide password"
+                            className="absolute right-3 top-11 -translate-y-1/2 text-gray-400 transition-colors duration-150"
+                        >
+                            {showConfirmPassword ? (<EyeSlashIcon className="w-5 h-5"/>) : (
+                                <EyeIcon className="w-5 h-5"/>)}
+                        </button>
+                    </div>
+                </div>
+                <button
+                    onClick={() => {
+                        setDialogContext("password");
+                        setIsConfirmDialogOpen(true);
+                    }}
+                    className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 mt-6"
+                    disabled={isLoading}
+                >
+                    <LockClosedIcon className="w-5 h-5 text-white"/>
+                    {isLoading ? "Updating..." : t('profile_change_pwd_btn')}
+                </button>
+            </div>
+            <ConfirmationDialog
+                isOpen={isConfirmDialogOpen}
+                title={dialogContext === "save" ? t("profile_dialog_title") : t("profile_confirm_dialog_pwd_title")}
+                message={
+                    dialogContext === "save"
+                        ? t("profile_confirm_dialog_subject")
+                        : t("profile_change_pwd_dialog")
+                }
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
+        </LayoutWrapper>
     );
 };
 

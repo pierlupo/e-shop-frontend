@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import {CubeIcon, UsersIcon, XMarkIcon, ShoppingBagIcon, ShieldCheckIcon} from "@heroicons/react/24/outline";
-import { motion, AnimatePresence } from "framer-motion";
+import {motion, AnimatePresence} from "framer-motion";
 // import type FocusTrap from 'focus-trap-react';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import useEscapeClose from "../../hooks/useEscapeClose";
 
 type AdminDrawerProps = {
@@ -11,16 +11,16 @@ type AdminDrawerProps = {
 };
 
 const drawerVariants = {
-    hidden: { x: "-100%", opacity: 0 },
+    hidden: {x: "-100%", opacity: 0},
     visible: {
         x: 0,
         opacity: 1,
-        transition: { type: "spring", stiffness: 300, damping: 30 }
+        transition: {type: "spring", stiffness: 300, damping: 30}
     },
-    exit: { x: "-100%", opacity: 0, transition: { duration: 0.2 } }
+    exit: {x: "-100%", opacity: 0, transition: {duration: 0.2}}
 };
 
-const AdminDrawer: React.FC<AdminDrawerProps> = ({ isOpen, onClose }) => {
+const AdminDrawer: React.FC<AdminDrawerProps> = ({isOpen, onClose}) => {
     const drawerRef = useRef<HTMLDivElement>(null);
     useEscapeClose(onClose);
 
@@ -38,9 +38,9 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ isOpen, onClose }) => {
                     {/* Backdrop */}
                     <motion.div
                         className="absolute inset-0 bg-black bg-opacity-50 z-30"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.5 }}
-                        exit={{ opacity: 0 }}
+                        initial={{opacity: 0}}
+                        animate={{opacity: 0.5}}
+                        exit={{opacity: 0}}
                         onClick={onClose}
                     />
                     {/* Drawer */}
@@ -52,19 +52,25 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({ isOpen, onClose }) => {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        transition={{ type: 'tween', duration: 0.3 }}
+                        transition={{type: 'tween', duration: 0.3}}
                         aria-label="Admin drawer"
                     >
-                        <div className="flex justify-between items-center mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">
-                            <h2 className="text-lg font-bold flex items-center hover:underline"><ShieldCheckIcon className="w-5 h-5 mr-3" />Admin Panel</h2>
+                        <div
+                            className="flex justify-between items-center mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">
+                            <h2 className="text-lg font-bold flex items-center hover:underline"><ShieldCheckIcon
+                                className="w-5 h-5 mr-3"/>Admin Panel</h2>
                             <button onClick={onClose}>
-                                <XMarkIcon className="w-6 h-6 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700" />
+                                <XMarkIcon
+                                    className="w-6 h-6 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"/>
                             </button>
                         </div>
                         <nav className="space-y-3">
-                            <Link to="/admin/users" className="flex items-center hover:underline"><UsersIcon className="w-5 h-5 mr-3" /><span className="font-semibold ">Users</span></Link>
-                            <Link to="/admin/products" className="flex items-center hover:underline "><CubeIcon className="w-5 h-5 mr-3" /><span className="font-semibold">Products</span></Link>
-                            <Link to="/admin/orders" className="flex items-cente hover:underline r"><ShoppingBagIcon className="w-5 h-5 mr-3" /><span className="font-semibold">Orders</span></Link>
+                            <Link to="/admin/users" className="flex items-center hover:underline"><UsersIcon
+                                className="w-5 h-5 mr-3"/><span className="font-semibold ">Users</span></Link>
+                            <Link to="/admin/products" className="flex items-center hover:underline "><CubeIcon
+                                className="w-5 h-5 mr-3"/><span className="font-semibold">Products</span></Link>
+                            <Link to="/admin/orders" className="flex items-cente hover:underline r"><ShoppingBagIcon
+                                className="w-5 h-5 mr-3"/><span className="font-semibold">Orders</span></Link>
                         </nav>
                     </motion.aside>
                 </>
