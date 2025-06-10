@@ -30,7 +30,7 @@ const getFullAvatarUrl = (avatarUrl: string | null | undefined): string | null =
 };
 
 const Profile: React.FC = () => {
-    const {user, setUser} = useAuth();
+    const {user, setUser, logout} = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState<User | null>(user);
     const [isEditing, setIsEditing] = useState(false);
@@ -83,9 +83,11 @@ const Profile: React.FC = () => {
             if (avatarFile) {
                 updatedAvatarUrl = await userService.uploadAvatar(user.id, avatarFile);
             }
+            const emailChanged = user.email !== formData.email;
             const updatedUser: User = await userService.updateUser(user.id, {
                 ...formData,
                 avatarUrl: updatedAvatarUrl,
+                emailVerified: emailChanged ? false : user.emailVerified
             });
             localStorage.setItem("user", JSON.stringify(updatedUser));
             setFormData(updatedUser);
@@ -94,7 +96,10 @@ const Profile: React.FC = () => {
             setUser(updatedUser);
             setMessage(t("profile_update_success_msg"));
             setIsEditing(false);
-
+            if (emailChanged) {
+                toast.success(t("profile_email_updated_logout_msg"));
+                setTimeout(() => logout(), 2000);
+            }
         } catch (error) {
             console.error(t("profile_update_error_msg"), error);
             setMessage(t("profile_update_error_msg"));
@@ -172,6 +177,10 @@ const Profile: React.FC = () => {
 
     const handleSendVerificationEmail = async () => {
         try {
+            if (!user?.id) {
+                toast.error("User ID is missing, cannot send verification email.");
+                return;
+            }
             await userService.sendVerificationEmail(user.id);
             toast.success("Verification email sent!");
         } catch (err) {

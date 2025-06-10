@@ -1,52 +1,87 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import i18n from "i18next";
+import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import type {User} from "../../interfaces/User";
 import {
     useReactTable,
     type ColumnDef,
     getCoreRowModel,
     flexRender,
     getPaginationRowModel,
+    getFilteredRowModel,
+    getSortedRowModel,
+    type SortingState,
 } from "@tanstack/react-table";
-import {ChevronLeftIcon, ChevronRightIcon, PencilSquareIcon, TrashIcon, ShieldCheckIcon, UserIcon,} from "@heroicons/react/24/outline";
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    PencilSquareIcon,
+    TrashIcon,
+    ShieldCheckIcon,
+    UserIcon,
+    MagnifyingGlassIcon,
+    ChevronDownIcon,
+    ChevronUpIcon
+} from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
-import {useTranslation} from "react-i18next";
-import type {Role} from "../../interfaces/Role.ts";
+import { useTranslation } from "react-i18next";
+import EditUserDialog from "../../components/admin/EditUserDialog.tsx";
+import type { Role } from "../../interfaces/Role.ts";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-import {userService} from "../../services/userService";
-
-type User = {
-    id: number;
-    firstname: string;
-    lastname: string;
-    email: string;
-    roles: Role[];
-    emailVerified: boolean;
-};
+import { userService } from "../../services/userService";
 
 const UserManager: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-    const {t} = useTranslation();
+    const [editingUser, setEditingUser] = useState<User | null>(null);
+    const [globalFilter, setGlobalFilter] = useState("");
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const { t } = useTranslation();
+    const [columnsDropdownOpen, setColumnsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const tableRef = useRef<HTMLTableSectionElement>(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const data = await userService.getAllUsers();
-                setUsers(data);
+                await refreshUsers();
             } catch (error) {
                 console.error(error);
-                toast.error("Failed to fetch users.");
-            } finally {
-                setLoading(false);
             }
         })();
     }, []);
 
+    const refreshUsers = async () => {
+        try {
+            const data = await userService.getAllUsers();
+            setUsers(data);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to fetch users.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleEdit = (user: User) => {
-        console.log("Edit user", user);
-        toast("Edit not implemented yet", {icon: "✏️"});
-        // TODO: Open edit modal
+        setEditingUser(user);
+        setIsEditDialogOpen(true);
+    };
+
+    const submitEdit = async (updatedUserData: Partial<User>) => {
+        if (!editingUser) return;
+        console.log("SubmitEdit: updated data", updatedUserData);
+        try {
+            await userService.updateUser(editingUser.id, updatedUserData);
+            toast.success("User updated successfully");
+            setIsEditDialogOpen(false);
+            setEditingUser(null);
+            await refreshUsers();
+        } catch {
+            toast.error("Failed to update user");
+        }
     };
 
     const handleDelete = (id: number) => {
@@ -62,7 +97,7 @@ const UserManager: React.FC = () => {
             setUsers((prev) => prev.filter((u) => u.id !== selectedUserId));
             toast.success("User deleted");
         } catch (error) {
-            console.error(error)
+            console.error(error);
             toast.error("Failed to delete user.");
         } finally {
             setSelectedUserId(null);
@@ -72,66 +107,108 @@ const UserManager: React.FC = () => {
 
     const getRoleColor = (role: string) => {
         switch (role.toLowerCase()) {
-            case 'admin':
-                return 'bg-red-500 text-white';
-            case 'user':
-                return 'bg-blue-500 text-white';
+            case "admin":
+                return "bg-red-500 text-white";
+            case "user":
+                return "bg-blue-500 text-white";
             default:
-                return 'bg-gray-400 text-white';
+                return "bg-gray-400 text-white";
         }
     };
 
     const getRoleIcon = (role: string) => {
         switch (role.toLowerCase()) {
-            case 'admin':
-                return <ShieldCheckIcon className="h-4 w-4 mr-1"/>;
-            case 'user':
-                return <UserIcon className="h-4 w-4 mr-1"/>;
+            case "admin":
+                return <ShieldCheckIcon className="h-4 w-4 mr-1" />;
+            case "user":
+                return <UserIcon className="h-4 w-4 mr-1" />;
             default:
                 return null;
         }
     };
 
-    const isEmailVerified = useCallback((emailVerified: boolean) => {
-        return emailVerified ? (
-            <span className="text-green-600 font-semibold inline-flex items-center gap-1">
-            <span className="text-base">✅</span>
-                {t('profile_email_verif_yes')}
+    const isEmailVerified = useCallback(
+        (emailVerified: boolean) => {
+            return emailVerified ? (
+                <span className="text-green-600 font-semibold inline-flex items-center gap-1">
+          <span className="text-base">✅</span>
+                    {t("profile_email_verif_yes")}
         </span>
-        ) : (
-            <span className="text-red-600 font-semibold inline-flex items-center gap-1">
-            <span className="text-base">❌</span>
-                {t('profile_email_verif_no')}
+            ) : (
+                <span className="text-red-600 font-semibold inline-flex items-center gap-1">
+          <span className="text-base">❌</span>
+                    {t("profile_email_verif_no")}
         </span>
-        );
-    }, [t]);
+            );
+        },
+        [t]
+    );
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as Node;
+            if (dropdownRef.current && !dropdownRef.current.contains(target )
+            ) {
+                setColumnsDropdownOpen(false);
+            }
+            if (tableRef.current && !tableRef.current.contains(target)) {
+                setSelectedUserId(null);
+            }
+        }
+        if (columnsDropdownOpen || selectedUserId !== null) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [columnsDropdownOpen, selectedUserId]);
 
     const columns = useMemo<ColumnDef<User>[]>(
         () => [
-            {accessorKey: "id", header: "ID"},
-            {accessorKey: "firstname", header: "Firstname"},
-            {accessorKey: "lastname", header: "Lastname"},
-            {accessorKey: "email", header: "Email"},
+            { accessorKey: "id", header: "ID" },
+            { accessorKey: "firstname", header: "Firstname" },
+            { accessorKey: "lastname", header: "Lastname" },
+            { accessorKey: "email", header: "Email" },
             {
                 accessorKey: "emailVerified",
                 header: "Email checked",
-                cell: ({row}) => isEmailVerified(row.original.emailVerified)
+                cell: ({ row }) => isEmailVerified(row.original.emailVerified),
+            },
+            {
+                accessorKey: "registrationDate",
+                header: "Registration date",
+                cell: ({ row }) => {
+                    const rawDate = row.original.registrationDate;
+                    const date = new Date(rawDate);
+                    const lang = i18n.language;
+
+                    const formattedDate = new Intl.DateTimeFormat(
+                        lang === "fr" ? "fr-FR" : "en-CA", // en-CA gives YYYY-MM-DD
+                        { year: "numeric", month: "2-digit", day: "2-digit" }
+                    ).format(date);
+
+                    return <span>{formattedDate}</span>;
+                },
             },
             {
                 id: "roles",
                 header: "Roles",
-                cell: ({row}) => (
+                cell: ({ row }) => (
                     <div className="flex flex-wrap gap-2">
                         {row.original.roles.map((role: Role) => {
-                            const cleanName = role.name.replace("ROLE_", "");
+                            const roleName = role.name.replace("ROLE_", "");
                             return (
                                 <span
                                     key={role.id}
-                                    className={`inline-flex items-center px-2 py-1 rounded-full text-sm font-medium ${getRoleColor(cleanName)}`}
+                                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${getRoleColor(
+                                        roleName
+                                    )} shadow-sm`}
                                 >
-                        {getRoleIcon(cleanName)}
-                                    {cleanName}
-                    </span>
+                  {getRoleIcon(roleName)}
+                                    {roleName}
+                </span>
                             );
                         })}
                     </div>
@@ -140,21 +217,21 @@ const UserManager: React.FC = () => {
             {
                 id: "actions",
                 header: "Actions",
-                cell: ({row}) => (
-                    <div className="flex space-x-8">
+                cell: ({ row }) => (
+                    <div className="flex space-x-4 items-center">
                         <button
                             onClick={() => handleEdit(row.original)}
-                            className="text-yellow-500 hover:underline"
+                            className="text-yellow-500 hover:text-yellow-400 transition"
                             title="Edit"
                         >
-                            <PencilSquareIcon className="h-5 w-5"/>
+                            <PencilSquareIcon className="h-6 w-6" />
                         </button>
                         <button
                             onClick={() => handleDelete(row.original.id)}
-                            className="text-red-600 hover:underline"
+                            className="text-red-500 hover:text-red-400 transition"
                             title="Delete"
                         >
-                            <TrashIcon className="h-5 w-5"/>
+                            <TrashIcon className="h-6 w-6" />
                         </button>
                     </div>
                 ),
@@ -177,113 +254,181 @@ const UserManager: React.FC = () => {
         data: paginatedData,
         columns,
         pageCount: Math.ceil(users.length / pagination.pageSize),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
         state: {
             pagination,
+            globalFilter,
+            sorting,
         },
         onPaginationChange: setPagination,
+        onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         manualPagination: true,
     });
+
+    const exportToCSV = () => {
+        const csvContent = [
+            ["ID", "Firstname", "Lastname", "Email", "Verified"].join(","),
+            ...users.map((u) =>
+                [u.id, u.firstname, u.lastname, u.email, u.emailVerified ? "Yes" : "No"].join(",")
+            ),
+        ].join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "users.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+    };
 
     return (
         <div className="px-4 py-12 max-w-7xl mx-auto space-y-8">
             {loading ? (
-                <p className="text-gray-500 dark:text-gray-200">Loading users...</p>
+                <div className="animate-pulse space-y-4">
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/3"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+                </div>
             ) : (
-                <div
-                    className="overflow-x-auto rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-600">
-                    <table
-                        className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 rounded-xl overflow-hidden">
-                        <thead className="bg-gray-100 dark:bg-gray-500">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <th
-                                        key={header.id}
-                                        className="px-6 py-3 text-left text-gray-500 dark:text-gray-200 uppercase tracking-wider"
-                                    >
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                        </thead>
-                        <tbody className="bg-white dark:bg-gray-600 divide-y divide-gray-200 dark:divide-gray-700">
-                        {table.getRowModel().rows.map((row) => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <td
-                                        key={cell.id}
-                                        className="px-6 py-4 whitespace-nowrap text-md text-gray-900 dark:text-gray-100"
-                                    >
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-
-                    <div className="flex flex-col md:flex-row justify-between items-center mt-6 px-4 pb-4 space-y-4 md:space-y-0 md:space-x-4 ">
-                        <div className="text-sm text-gray-700 dark:text-gray-300">
-                            Page {pagination.pageIndex + 1} of {table.getPageCount()}
+                <>
+                    {/* Controls: Search + Column Toggle */}
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 mb-4">
+                        {/* Search Input */}
+                        <div className="relative w-full max-w-md">
+                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                            <input
+                                type="text"
+                                onChange={(e) => setGlobalFilter(e.target.value)}
+                                placeholder="Search by name or email"
+                                className="w-full pl-10 pr-4 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:text-amber-50 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500"
+                            />
                         </div>
-
-                        <div className="flex items-center space-x-2">
+                        {/* Column Toggle Dropdown */}
+                        <div className="relative" ref={dropdownRef}>
                             <button
-                                onClick={() => table.previousPage()}
-                                disabled={!table.getCanPreviousPage()}
-                                className="px-3 py-1 rounded-md text-sm bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:text-amber-50 dark:hover:bg-gray-700 disabled:opacity-50 cursor-pointer"
+                                onClick={() => setColumnsDropdownOpen((open) => !open)}
+                                className="border  px-5 py-1.5 rounded-md bg-gray-100 text-gray-700 dark:text-amber-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500 focus:ring-offset-1 transition font-semibold"
+                                aria-expanded={columnsDropdownOpen}
+                                aria-haspopup="true"
+                                title="Toggle columns"
                             >
-                                <ChevronLeftIcon className="h-5 w-5" />
+                                Columns
                             </button>
-                            <button
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                                className="px-3 py-1 rounded-md text-sm bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:text-amber-50 dark:hover:bg-gray-700 disabled:opacity-50 cursor-pointer"
-                            >
-                                <ChevronRightIcon className="h-5 w-5" />
-                            </button>
-                            <select
-                                value={pagination.pageSize}
-                                onChange={(e) =>
-                                    setPagination((prev) => ({
-                                        ...prev,
-                                        pageSize: Number(e.target.value),
-                                        pageIndex: 0,
-                                    }))
-                                }
-                                className="ml-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-amber-50 border border-gray-300 dark:border-gray-700 dark:hover:bg-gray-700 rounded-md px-2 py-1 cursor-pointer"
-                            >
-                                {[10, 25, 50, 100].map((size) => (
-                                    <option key={size} value={size}>
-                                        {size}
-                                    </option>
-                                ))}
-                            </select>
+                            {columnsDropdownOpen && (
+                                <div
+                                    className="absolute top-0 left-full ml-2 w-48 max-h-60 overflow-auto rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 shadow-lg p-3 animate-fade-slide-right z-10"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="columns-menu"
+                                >
+                                    {table.getAllLeafColumns().map((column) => (
+                                        <label
+                                            key={column.id}
+                                            className="flex items-center cursor-pointer select-none text-sm text-gray-700 dark:text-gray-200 mb-1 last:mb-0"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={column.getIsVisible()}
+                                                onChange={column.getToggleVisibilityHandler()}
+                                                className="mr-2 rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-gray-200 dark:focus:ring-gray-500"
+                                            />
+                                            {column.id}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
+                    {/* Table */}
+                    <div className="overflow-x-auto rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-600">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 overflow-hidden">
+                            <thead className="bg-gray-50 dark:bg-gray-500 text-gray-500 dark:text-gray-200 uppercase">
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <tr key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => (
+                                        <th
+                                            aria-sort={header.column.getIsSorted() === "asc" ? "ascending" : header.column.getIsSorted() === "desc" ? "descending" : "none"}
+                                            key={header.id}
+                                            className="px-6 py-3 text-left text-gray-500 dark:text-gray-200 uppercase tracking-wider cursor-pointer select-none"
+                                            onClick={header.column.getToggleSortingHandler()}
+                                        >
+                                            <div className="flex items-center justify-between w-full">
+                                                <span>{flexRender(header.column.columnDef.header, header.getContext())}</span>
+                                                {header.column.getIsSorted() === "asc" && (
+                                                    <ChevronUpIcon className="ml-2 w-5 h-5 text-gray-500 dark:text-gray-200 group-hover:text-gray-600 transition" />
+                                                )}
+                                                {header.column.getIsSorted() === "desc" && (
+                                                    <ChevronDownIcon className="ml-2 w-5 h-5 text-gray-500 dark:text-gray-200 group-hover:text-gray-600 transition" />
+                                                )}
+                                            </div>
+                                        </th>
+                                    ))}
+                                </tr>
+                            ))}
+                            </thead>
+                            <tbody ref={tableRef} className="bg-gray-100 dark:bg-gray-600 divide-y divide-gray-200 dark:divide-gray-700">
+                            {table.getRowModel().rows.map((row) => (
+                                <tr
+                                    key={row.id}
+                                    className={`hover:bg-gray-200 dark:hover:bg-gray-500 transition-all cursor-pointer ${
+                                        selectedUserId === row.original.id ? "bg-gray-300 dark:bg-gray-800" : ""
+                                    }`}
+                                    onClick={() => setSelectedUserId(row.original.id)}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td key={cell.id} className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                        {/* Pagination */}
+                        <div className="flex flex-col md:flex-row justify-between items-center mt-6 px-4 pb-4 space-y-4 md:space-y-0 md:space-x-4 ">
+                            <div className="text-sm text-gray-700 dark:text-gray-300">
+                                Page {pagination.pageIndex + 1} of {table.getPageCount()}
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={() => table.previousPage()}
+                                    disabled={!table.getCanPreviousPage()}
+                                    className="px-3 py-1 rounded-md text-sm bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:text-amber-50 dark:hover:bg-gray-700 disabled:opacity-50 cursor-pointer"
+                                >
+                                    <ChevronLeftIcon className="h-5 w-5" />
+                                </button>
+                                <button
+                                    onClick={() => table.nextPage()}
+                                    disabled={!table.getCanNextPage()}
+                                    className="px-3 py-1 rounded-md text-sm bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:text-amber-50 dark:hover:bg-gray-700 disabled:opacity-50 cursor-pointer"
+                                >
+                                    <ChevronRightIcon className="h-5 w-5" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button onClick={exportToCSV} className="btn-export text-gray-700 dark:text-amber-50">Export CSV</button>
+                    <ConfirmationDialog
+                        isOpen={isDialogOpen}
+                        title={t("confirm_delete_user_title")}
+                        message={t("confirm_delete_user_message")}
+                        onConfirm={confirmDelete}
+                        onCancel={() => setIsDialogOpen(false)}
+                    />
+                    {isEditDialogOpen && editingUser && (
+                        <EditUserDialog
+                            user={editingUser}
+                            onClose={() => setIsEditDialogOpen(false)}
+                            onSubmit={submitEdit}
+                        />
+                    )}
+                </>
             )}
-            <ConfirmationDialog
-                isOpen={isDialogOpen}
-                title="Confirm Deletion"
-                message="Are you sure you want to delete this user?"
-                onCancel={() => {
-                    setIsDialogOpen(false);
-                    setSelectedUserId(null);
-                }}
-                onConfirm={confirmDelete}
-            />
         </div>
     );
 };

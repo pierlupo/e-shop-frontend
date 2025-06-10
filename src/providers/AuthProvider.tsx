@@ -12,6 +12,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     useEffect(() => {
+        if (!user?.id) return;
         const token:string|null = localStorage.getItem("token");
         if (token && user?.id) {
             userService.getUserById(user.id)

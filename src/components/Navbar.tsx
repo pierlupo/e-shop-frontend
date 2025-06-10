@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                         {/* Left: Logo and Title */}
                         <Link to="/home" className="flex items-center space-x-2">
                             <img src="/favicon-cart.jpg" alt="Logo" className="w-8 h-8"/>
-                            <span className="font-bold text-xl text-gray-800 dark:text-amber-50">{t('title')}</span>
+                            <span className="font-bold text-xl text-gray-800 dark:text-amber-50 hover:underline">{t('title')}</span>
                         </Link>
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-4">
@@ -65,7 +65,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title={t('tooltip_darkMode')}
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-300"/> :
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-400"/> :
                                             <MoonIcon className="w-5 h-5 text-gray-700"/>}
                                     </button>
                                     <div className="z-50 font-semibold">
@@ -83,26 +83,22 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                             ) : (
                                                 <UserIcon className="w-6 h-6 hover:text-gray-900 transition duration-150"/>
                                             )}
-                                            <span className="hidden sm:inline font-semibold">
-            {t('welcome_msg', {name: user.firstname})}
-        </span>
-                                            <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100
-            bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow
-            transition-all duration-200 whitespace-nowrap z-10">
-            {t('tooltip_profile')}
-        </span>
+                                            <span className="hidden sm:inline ml-2">{t('welcome_msg', {name: user.firstname})}</span>
+                                            <span className="absolute -bottom-10 transform -translate-x-1/2 scale-0 group-hover:scale-100 bg-gray-800 text-amber-50 text-sm px-2 py-1 rounded shadow transition-all duration-200 whitespace-nowrap z-10 font-normal">{t('tooltip_profile')}</span>
                                         </Link>
-                                        {user.roles?.some(role => role.name === "ROLE_ADMIN") && (
-                                            <button
-                                                onClick={() => setAdminDrawerOpen(!isAdminDrawerOpen)}
-                                                className="flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                                                title="Toggle Admin Panel"
-                                            >
-                                                <ShieldCheckIcon className="h-4 w-4 mr-1"/>
-                                                Admin
-                                            </button>
-                                        )}
                                     </div>
+                                    <span>
+                                            {user.roles?.some(role => role.name === "ROLE_ADMIN") && (
+                                                <button
+                                                    onClick={() => setAdminDrawerOpen(!isAdminDrawerOpen)}
+                                                    className="flex items-center px-3 py-1 bg-red-600 text-amber-50 hover:bg-red-700 transition rounded-full uppercase text-sm font-semibold"
+                                                    title="Toggle Admin Panel"
+                                                >
+                                                    <ShieldCheckIcon className="h-4 w-4 mr-1"/>
+                                                    Admin
+                                                </button>
+                                            )}
+                                        </span>
                                     <button
                                         onClick={() => setShowLogoutConfirm(true)}
                                         className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-100 dark:hover:bg-red-700 dark:hover:text-white transition"
@@ -126,7 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title={t('tooltip_darkMode')}
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-300"/> :
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-400"/> :
                                             <MoonIcon className="w-5 h-5 text-gray-700"/>}
                                     </button>
                                     <LanguageDropdown/>
@@ -186,7 +182,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title={t('tooltip_darkMode')}
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500"/> :
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-400"/> :
                                             <MoonIcon className="w-5 h-5 text-gray-700"/>}
                                     </button>
                                 </>
@@ -203,7 +199,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                         className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                         title="Toggle dark mode"
                                     >
-                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-500"/> :
+                                        {darkMode ? <SunIcon className="w-5 h-5 text-yellow-400"/> :
                                             <MoonIcon className="w-5 h-5 text-gray-700"/>}
                                     </button>
                                 </>

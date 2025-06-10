@@ -81,6 +81,8 @@
   "profile_pwd_non_identical": "Passwords do not match.",
   "profile_update_success_msg": "Profile updated successfully.",
   "profile_update_error_msg": "Failed to update profile.",
+  "profile_email_updated_logout_msg": "Email updated. Please verify and log in again.",
+  "profile_registration_date": "Member since ",
   "all_rights_footer": "All rights reserved.",
   "home_link_footer": "Home",
   "about_link_footer": "About",
@@ -104,6 +106,5 @@
   "adminUser_title": "User",
   "welcome_adminUser_msg": "Welcome admin to the user panel management!",
   "help_title": "Help page",
-  "assistance_msg": "If you need assistance, please contact support@example.com.",
-  "profile_registration_date": "Member since "
+  "assistance_msg": "If you need assistance, please contact support@example.com."
 }

@@ -81,6 +81,8 @@
   "profile_pwd_non_identical": "Les mots de passe ne sont pas identiques.",
   "profile_update_success_msg": "Profil bien mis à jour.",
   "profile_update_error_msg": "Échec de la mise à jour du profil.",
+  "profile_email_updated_logout_msg": "Email mis à jour. Vérifiez-le et connectez-vous de nouveau.",
+  "profile_registration_date": "Member since ",
   "all_rights_footer": "Tous droits réservés.",
   "home_link_footer": "Accueil",
   "about_link_footer": "À-propos",
@@ -104,6 +106,5 @@
   "adminUser_title": "User",
   "welcome_adminUser_msg": "Welcome admin to the user panel management!",
   "help_title": "Page d'aide",
-  "assistance_msg": "Si vous avez besoin d'assistance, contactez support@example.com s'il-vous-plaît",
-  "profile_registration_date": "Membre depuis le "
-}
+  "assistance_msg": "Si vous avez besoin d'assistance, contactez support@example.com s'il-vous-plaît"
+ }
