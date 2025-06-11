@@ -23,6 +23,11 @@ export const userService = {
         return response.data.data;
     },
 
+    updateUserRoles: async (userId: number, roleNames: string[]): Promise<User> => {
+        const response = await apiClient.put(`${USERS_API_URL}/${userId}/roles`, roleNames);
+        return response.data.data;
+    },
+
     deleteUser: async (userId: number): Promise<void> => {
         await apiClient.delete(`${USERS_API_URL}/${userId}/delete`);
     },

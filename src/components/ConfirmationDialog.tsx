@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 interface ConfirmationDialogProps {
     isOpen: boolean;
     title: string;
-    message: string;
+    message: React.ReactNode;
     onConfirm: () => void;
     onCancel: () => void;
 }

@@ -93,6 +93,14 @@
   "error_boundary_instruction": "Please try refreshing the page.",
   "cancel_btn": "Cancel",
   "confirm_btn": "Confirm",
+  "columns": "Columns",
+  "search": "Research",
+  "edit_user_title": "Edit user",
+  "confirm_delete_user_title": "Confirm and delete",
+  "confirm_delete_user_msg_1": "Are you sure you want to delete",
+  "confirm_delete_user_msg_2": "this user ?",
+  "confirm_edit_user_msg_1": "Are you sure you want to save the change(s) ?",
+  "confirm_edit_user_msg_2": "to this user ?",
   "welcome_home_msg": "Welcome to the app!",
   "log_success_msg": "You are logged in.",
   "dash_title": "Dashboard",
@@ -106,5 +114,6 @@
   "adminUser_title": "User",
   "welcome_adminUser_msg": "Welcome admin to the user panel management!",
   "help_title": "Help page",
-  "assistance_msg": "If you need assistance, please contact support@example.com."
+  "assistance_msg": "If you need assistance, please contact support@example.com.",
+  "export_csv_btn": "Export CSV"
 }

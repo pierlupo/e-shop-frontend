@@ -20,7 +20,9 @@ import {
     UserIcon,
     MagnifyingGlassIcon,
     ChevronDownIcon,
-    ChevronUpIcon
+    ChevronUpIcon,
+    ArrowDownTrayIcon,
+    ViewColumnsIcon
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -70,11 +72,17 @@ const UserManager: React.FC = () => {
         setIsEditDialogOpen(true);
     };
 
-    const submitEdit = async (updatedUserData: Partial<User>) => {
+    const submitEdit = async (updatedUserData: Partial<User>, updatedRoles: string[] | null) => {
         if (!editingUser) return;
-        console.log("SubmitEdit: updated data", updatedUserData);
+        console.log("SubmitEdit: updated data", updatedUserData, "Roles:", updatedRoles);
         try {
             await userService.updateUser(editingUser.id, updatedUserData);
+
+            // If roles changed, call the roles endpoint
+            if (updatedRoles && updatedRoles.length > 0) {
+                await userService.updateUserRoles(editingUser.id, updatedRoles);
+            }
+
             toast.success("User updated successfully");
             setIsEditDialogOpen(false);
             setEditingUser(null);
@@ -273,10 +281,9 @@ const UserManager: React.FC = () => {
         const csvContent = [
             ["ID", "Firstname", "Lastname", "Email", "Verified"].join(","),
             ...users.map((u) =>
-                [u.id, u.firstname, u.lastname, u.email, u.emailVerified ? "Yes" : "No"].join(",")
+                [u.id, u.firstname, u.lastname, u.email, u.emailVerified, u.registrationDate, u.roles ? "Yes" : "No"].join(",")
             ),
         ].join("\n");
-
         const blob = new Blob([csvContent], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -300,11 +307,11 @@ const UserManager: React.FC = () => {
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 mb-4">
                         {/* Search Input */}
                         <div className="relative w-full max-w-md">
-                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-amber-50 pointer-events-none" />
                             <input
                                 type="text"
                                 onChange={(e) => setGlobalFilter(e.target.value)}
-                                placeholder="Search by name or email"
+                                placeholder={t("search")}
                                 className="w-full pl-10 pr-4 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:text-amber-50 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500"
                             />
                         </div>
@@ -312,12 +319,13 @@ const UserManager: React.FC = () => {
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() => setColumnsDropdownOpen((open) => !open)}
-                                className="border  px-5 py-1.5 rounded-md bg-gray-100 text-gray-700 dark:text-amber-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500 focus:ring-offset-1 transition font-semibold"
+                                className="flex items-center gap-2 px-5 py-1.5 text-amber-50 bg-blue-600 rounded-md hover:bg-blue-700 dark:text-amber-50 dark:bg-gray-500 border-gray-300 dark:border-gray-600 shadow-sm dark:hover:bg-gray-600 transition font-semibold"
                                 aria-expanded={columnsDropdownOpen}
                                 aria-haspopup="true"
                                 title="Toggle columns"
                             >
-                                Columns
+                                <ViewColumnsIcon className="w-5 h-5 dark:text-amber-50 dark:hover:bg-gray-700"  />
+                                {t("columns")}
                             </button>
                             {columnsDropdownOpen && (
                                 <div
@@ -409,14 +417,39 @@ const UserManager: React.FC = () => {
                                 >
                                     <ChevronRightIcon className="h-5 w-5" />
                                 </button>
+                                <select
+                                    value={pagination.pageSize}
+                                    onChange={(e) =>
+                                    setPagination((prev) => ({...prev, pageSize: Number(e.target.value), pageIndex: 0}))}
+                                    className="ml-2 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-amber-50 border border-gray-300 dark:border-gray-700 dark:hover:bg-gray-700 rounded-md px-2 py-1 cursor-pointer"
+                                >
+                                    {[10, 25, 50, 100].map((size) => (
+                                    <option key={size} value={size}>
+                                        {size}
+                                    </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <button onClick={exportToCSV} className="btn-export text-gray-700 dark:text-amber-50">Export CSV</button>
+                    <div className="relative">
+                    <button
+                        onClick={exportToCSV}
+                        className="w-60 text-amber-50 bg-blue-600 py-2 rounded-md hover:bg-blue-700 transition mb-4 mx-auto block">
+                        <ArrowDownTrayIcon className="w-5 h-5 absolute top-1/2 transform -translate-y-1/2  ml-3 dark:text-amber-50 dark:hover:bg-gray-700"  />
+                        {t("export_csv_btn")}
+                    </button>
+                    </div>
                     <ConfirmationDialog
                         isOpen={isDialogOpen}
                         title={t("confirm_delete_user_title")}
-                        message={t("confirm_delete_user_message")}
+                        message={
+                            <>
+                                {t("confirm_delete_user_msg_1")}
+                                <br />
+                                {t("confirm_delete_user_msg_2")}
+                            </>
+                        }
                         onConfirm={confirmDelete}
                         onCancel={() => setIsDialogOpen(false)}
                     />

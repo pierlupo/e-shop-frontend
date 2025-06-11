@@ -93,6 +93,14 @@
   "error_boundary_instruction": "Veuillez essayer de recharger la page.",
   "cancel_btn": "Annuler",
   "confirm_btn": "Confirmer",
+  "columns": "Colonnes",
+  "search": "Recherche",
+  "edit_user_title": "Modifier utilisateur",
+  "confirm_delete_user_title": "Confirmer et effacer",
+  "confirm_delete_user_msg_1": "Êtes-vous sûr de vouloir effacer",
+  "confirm_delete_user_msg_2": "cet utilisateur ?",
+  "confirm_edit_user_msg_1": "Êtes-vous sûr de vouloir sauvegarder ?",
+  "confirm_edit_user_msg_2": "les modifications ?",
   "welcome_home_msg": "Bienvenue sur la page d'accueil de l'application!",
   "log_success_msg": "Vous êtes connecté.",
   "dash_title": "Tableau de bord",
@@ -106,5 +114,6 @@
   "adminUser_title": "User",
   "welcome_adminUser_msg": "Welcome admin to the user panel management!",
   "help_title": "Page d'aide",
-  "assistance_msg": "Si vous avez besoin d'assistance, contactez support@example.com s'il-vous-plaît"
+  "assistance_msg": "Si vous avez besoin d'assistance, contactez support@example.com s'il-vous-plaît",
+  "export_csv_btn": "Exporter CSV"
  }

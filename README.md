@@ -21,9 +21,9 @@ This project is a modern frontend built using **React**, **TypeScript**, and **V
 │ └── auth/ # Auth-related components
 ├── config/ # App configuration
 ├── context/ # Global contexts
+│ └──  AuthContext.ts # Authentication context 
+│ └──  DarkModeContext.ts # Dark mode context 
 ├── hooks/ # Custom hooks
-│ ├── AuthContext.ts # Authentication context 
-│ ├── DarkModeContext.ts # Dark mode context 
 ├── i18n/ # Internationalization
 ├── interfaces/ # Interfaces
 ├── providers/ # App-level providers (like AuthProvider, DarkModeProvider) 
