@@ -102,7 +102,7 @@ const Login: React.FC = () => {
             </div>
             <button
                 type="submit"
-                className="w-80 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4 mx-auto block"
+                className="w-80 bg-blue-600 text-amber-50 py-2 rounded hover:bg-blue-700 transition mb-4 mx-auto block"
             >
                 {t('login_btn')}
             </button>

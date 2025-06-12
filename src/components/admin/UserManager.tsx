@@ -1,5 +1,8 @@
 import i18n from "i18next";
 import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import type {UserUpdateRequest} from "../../interfaces/UserUpdateRequest.ts";
+import type {UserCreateRequest} from "../../interfaces/UserCreateRequest.ts";
+import CreateUserDialog from "../../components/admin/CreateUserDialog.tsx";
 import type {User} from "../../interfaces/User";
 import {
     useReactTable,
@@ -22,7 +25,7 @@ import {
     ChevronDownIcon,
     ChevronUpIcon,
     ArrowDownTrayIcon,
-    ViewColumnsIcon
+    ViewColumnsIcon, UserPlusIcon
 } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -35,6 +38,7 @@ const UserManager: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -68,18 +72,29 @@ const UserManager: React.FC = () => {
         }
     }
 
+    const submitCreate = async (request: UserCreateRequest) => {
+        try {
+            await userService.createdUserByAdmin(request);
+            await refreshUsers(); // refresh the list
+            toast.success(t("user_created_successfully"));
+            setIsCreateDialogOpen(false);
+        } catch (error) {
+            console.error(error)
+            toast.error(t("error_creating_user"));
+        }
+    };
+
     const handleEdit = (user: User) => {
         setEditingUser(user);
         setIsEditDialogOpen(true);
     };
 
-    const submitEdit = async (updatedUserData: Partial<User>, updatedRoles: string[] | null) => {
+    const submitEdit = async (updatedUserData: UserUpdateRequest, updatedRoles: string[] | null) => {
         if (!editingUser) return;
         console.log("SubmitEdit: updated data", updatedUserData, "Roles:", updatedRoles);
         try {
             await userService.updateUser(editingUser.id, updatedUserData);
 
-            // If roles changed, call the roles endpoint
             if (updatedRoles && updatedRoles.length > 0) {
                 await userService.updateUserRoles(editingUser.id, updatedRoles);
             }
@@ -117,11 +132,11 @@ const UserManager: React.FC = () => {
     const getRoleColor = (role: string) => {
         switch (role.toLowerCase()) {
             case "admin":
-                return "bg-red-500 text-white";
+                return "bg-red-500 text-amber-50";
             case "user":
-                return "bg-blue-500 text-white";
+                return "bg-blue-500 text-amber-50";
             default:
-                return "bg-gray-400 text-white";
+                return "bg-gray-400 text-amber-50";
         }
     };
 
@@ -160,9 +175,7 @@ const UserManager: React.FC = () => {
             if (dropdownRef.current && !dropdownRef.current.contains(target)) {
                 setColumnsDropdownOpen(false);
             }
-            // If dialog is open, don't unselect anything — we’re likely interacting with it
             if (isDialogOpen) return;
-            // Check if clicked outside the table
             const clickedOutsideTable = tableRef.current && !tableRef.current.contains(target);
             if (clickedOutsideTable) {
                 setSelectedUserId(null);
@@ -318,7 +331,15 @@ const UserManager: React.FC = () => {
                                 className="w-full pl-10 pr-4 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:text-amber-50 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500"
                             />
                         </div>
-                        {/* Column Toggle Dropdown */}
+                        {/* Column Toggle Dropdown + Add User Button*/}
+                        <div className="flex items-center space-x-2">
+                            <button
+                                onClick={() => setIsCreateDialogOpen(true)}
+                                className="flex items-center gap-2 px-5 py-1.5 bg-blue-600 text-amber-50 rounded-md hover:bg-blue-700 transition font-semibold"
+                            >
+                                <UserPlusIcon className="w-5 h-5" />
+                                {t("admin_create_user_title")}
+                            </button>
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() => setColumnsDropdownOpen((open) => !open)}
@@ -354,6 +375,7 @@ const UserManager: React.FC = () => {
                                 </div>
                             )}
                         </div>
+                    </div>
                     </div>
                     {/* Table */}
                     <div className="overflow-x-auto rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-600">
@@ -462,6 +484,12 @@ const UserManager: React.FC = () => {
                             user={editingUser}
                             onClose={() => setIsEditDialogOpen(false)}
                             onSubmit={submitEdit}
+                        />
+                    )}
+                    {isCreateDialogOpen && (
+                        <CreateUserDialog
+                            onClose={() => setIsCreateDialogOpen(false)}
+                            onSubmit={submitCreate}
                         />
                     )}
                 </>

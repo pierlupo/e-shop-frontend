@@ -47,7 +47,7 @@ const AdminDrawer: React.FC<AdminDrawerProps> = ({isOpen, onClose}) => {
                     <motion.aside
                         ref={drawerRef}
                         tabIndex={-1}
-                        className="absolute left-0 top-0 h-full w-1/6 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white p-6 shadow-lg z-40 border border-gray-300 dark:border-gray-700"
+                        className="absolute left-0 top-0 h-full w-1/6 bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-amber-50 p-6 shadow-lg z-40 border border-gray-300 dark:border-gray-700"
                         variants={drawerVariants}
                         initial="hidden"
                         animate="visible"

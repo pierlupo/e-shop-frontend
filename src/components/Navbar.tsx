@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                         </span>
                                     <button
                                         onClick={() => setShowLogoutConfirm(true)}
-                                        className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-100 dark:hover:bg-red-700 dark:hover:text-white transition"
+                                        className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-100 dark:hover:bg-red-700 dark:hover:text-amber-50 transition"
                                         title={t('logout_btn')}
                                     >
                                         {t('logout_btn')}
@@ -173,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                             setShowLogoutConfirm(true);
                                             setIsOpen(false);
                                         }}
-                                        className="w-full text-left px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                        className="w-full text-left px-4 py-2 bg-red-600 text-amber-50 rounded hover:bg-red-700"
                                     >
                                         Logout
                                     </button>

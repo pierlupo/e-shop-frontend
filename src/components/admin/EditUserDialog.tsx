@@ -45,7 +45,7 @@ export default function EditUserDialog({ user, onClose, onSubmit }: EditUserDial
 
     return (
         <ModalPortal>
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center dark:bg-gray-600 z-50"
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
             onClick={onClose}
         >
             <form  onSubmit={handleSubmit}
@@ -115,13 +115,13 @@ export default function EditUserDialog({ user, onClose, onSubmit }: EditUserDial
                         className="px-4 py-2 rounded font-medium border border-gray-300
                                                 bg-gray-100 text-gray-800 hover:bg-gray-200
                                                 focus:ring-2 focus:ring-gray-400
-                                                dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700"
+                                                dark:bg-gray-600 dark:text-amber-50 dark:hover:bg-gray-700"
                     >
                         {t("cancel_btn")}
                     </button>
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        className="px-4 py-2 bg-blue-600 text-amber-50 rounded hover:bg-blue-700"
                     >
                         {t("profile_save_changes_btn")}
                     </button>

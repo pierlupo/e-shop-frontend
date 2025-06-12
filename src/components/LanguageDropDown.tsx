@@ -40,7 +40,7 @@ export const LanguageDropdown: React.FC = () => {
                     <button
                         onClick={() => changeLanguage(lang.code)}
                         className={`${
-                            active ? 'bg-blue-500 text-white' : 'text-gray-900'
+                            active ? 'bg-blue-500 text-amber-50' : 'text-gray-900'
                         } group flex justify-between w-full items-center px-4 py-2 text-sm dark:text-amber-50`}
                     >
                 <span className="flex items-center">

@@ -1,3 +1,5 @@
+import type {UserUpdateRequest} from "../interfaces/UserUpdateRequest.ts";
+import type {UserCreateRequest} from "../interfaces/UserCreateRequest.ts";
 import apiClient from "../utils/apiClient.ts";
 import type {User} from "../interfaces/User";
 import {AUTH_API_URL, USERS_API_URL} from "../config/config";
@@ -14,11 +16,17 @@ export const userService = {
         return response.data.data;
     },
 
-    createUser: async (userData: Partial<User>): Promise<User> => {
+    createUser: async (userData: UserCreateRequest): Promise<User> => {
         const response = await apiClient.post(`${USERS_API_URL}/add`, userData);
         return response.data.data;
     },
-    updateUser: async (userId: number, userData: Partial<User>): Promise<User> => {
+
+    createdUserByAdmin: async (userData: UserCreateRequest): Promise<User> => {
+        const response = await apiClient.post(`${USERS_API_URL}/admin/add`, userData);
+        return response.data.data;
+    },
+
+    updateUser: async (userId: number, userData: UserUpdateRequest): Promise<User> => {
         const response = await apiClient.put(`${USERS_API_URL}/${userId}/update`, userData);
         return response.data.data;
     },

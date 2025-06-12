@@ -153,7 +153,7 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="relative mb-4 w-80">
                         <LockClosedIcon className="w-5 h-5 absolute left-3 top-11 transform -translate-y-1/2 text-gray-400" />
-                        <label className="block font-semibold dark:text-amber-50">{t('signup_confirm_password')}</label>
+                        <label className="block font-semibold mb-1 dark:text-amber-50">{t('signup_confirm_password')}</label>
                         <input
                             type={showConfirmPassword ? "text" : "password"}
                             name="confirmPassword"
@@ -172,7 +172,7 @@ const Signup: React.FC = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-80 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-4">
+                        className="w-80 bg-blue-600 text-amber-50 py-2 rounded hover:bg-blue-700 transition mb-4">
                         {t('signup_btn')}
                     </button>
                     <p className="text-sm text-center dark:text-amber-50">

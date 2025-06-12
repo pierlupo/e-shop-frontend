@@ -108,6 +108,8 @@
   "dash_title": "Tableau de bord",
   "welcome_dash_msg": "Bienvenue sur votre tableau de bord!",
   "admin_title": "Admin",
+  "admin_create_user_title": "Ajouter utilisateur",
+  "admin_create_user_btn": "Créer utilisateur",
   "welcome_admin_msg": "Bienvenue admin sur votre page d'accueil!",
   "adminProduct_title": "Product",
   "welcome_adminProduct_msg": "Welcome admin to the product panel management!",

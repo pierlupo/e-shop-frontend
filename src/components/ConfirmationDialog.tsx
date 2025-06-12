@@ -54,7 +54,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                             ref={dialogRef}
                             className="bg-white dark:bg-gray-600 p-6 rounded-2xl shadow-2xl max-w-sm w-full space-y-4 transition-all">
                             <DialogTitle
-                                className="flex items-center justify-center gap-2 text-lg font-extrabold text-gray-900 dark:text-white">
+                                className="flex items-center justify-center gap-2 text-lg font-extrabold text-gray-900 dark:text-amber-50">
                                 <ExclamationTriangleIcon className="h-9 w-9 text-red-500"/>
                                 {title}
                             </DialogTitle>
@@ -68,7 +68,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                                     className="px-4 py-2 rounded font-medium border border-gray-300
                                                 bg-gray-100 text-gray-800 hover:bg-gray-200
                                                 focus:ring-2 focus:ring-gray-400
-                                                dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700"
+                                                dark:bg-gray-600 dark:text-amber-50 dark:hover:bg-gray-700"
                                 >
                                     {t('cancel_btn')}
                                 </button>
@@ -78,7 +78,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                                         onConfirm();
                                     }}
                                     className="px-4 py-2 rounded font-medium
-                                                bg-blue-600 text-white hover:bg-blue-700
+                                                bg-blue-600 text-amber-50 hover:bg-blue-700
                                                 focus:ring-2 focus:ring-blue-400"
                                 >
                                     {t('confirm_btn')}

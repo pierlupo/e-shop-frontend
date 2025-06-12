@@ -3,7 +3,7 @@ import React from "react";
 
 // const Header: React.FC = () => {
 //     return (
-//         <header className="bg-gray-600 text-white px-6 py-4 shadow">
+//         <header className="bg-gray-600 text-amber-50 px-6 py-4 shadow">
 //             <div className="max-w-6xl mx-auto flex items-center justify-between">
 //                 {/* Logo and Site Title */}
 //                 <Link to="/" className="flex items-center space-x-2">

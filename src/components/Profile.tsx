@@ -224,7 +224,7 @@ const Profile: React.FC = () => {
                         {(isEditing) && (
                             <label
                                 htmlFor="avatarUpload"
-                                className="cursor-pointer px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                className="cursor-pointer px-3 py-2 bg-blue-600 text-amber-50 rounded hover:bg-blue-700"
                             >
                                 {t('profile_upload_avatar')}
                                 <input
@@ -305,7 +305,7 @@ const Profile: React.FC = () => {
                             <span className="text-base mr-2">❌</span> {t('profile_email_verif_no')}
                                     <button
                                         onClick={handleSendVerificationEmail}
-                                        className="ml-2 px-2 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+                                        className="ml-2 px-2 py-1 text-sm text-amber-50 bg-blue-600 rounded hover:bg-blue-700 transition"
                                     >
                                 {t('profile_email_verif_btn')}
                             </button>
@@ -323,7 +323,7 @@ const Profile: React.FC = () => {
                                     setDialogContext("save");
                                     setIsConfirmDialogOpen(true);
                                 }}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                className="w-full px-4 py-2 bg-blue-600 text-amber-50 rounded hover:bg-blue-700"
                                 disabled={isLoading}
                             >
                                 {isLoading ? "Saving..." : t('profile_save_changes_btn')}
@@ -348,9 +348,9 @@ const Profile: React.FC = () => {
                                 setMessage("");
                                 setError("");
                             }}
-                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                            className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-amber-50 rounded hover:bg-yellow-600"
                         >
-                            <PencilSquareIcon className="w-5 h-5 text-white"/>
+                            <PencilSquareIcon className="w-5 h-5 text-amber-50"/>
                             {t('profile_edit_btn')}
                         </button>
                     )}
@@ -431,10 +431,10 @@ const Profile: React.FC = () => {
                         setDialogContext("password");
                         setIsConfirmDialogOpen(true);
                     }}
-                    className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 mt-6"
+                    className="w-80 flex items-center gap-2 px-4 py-2 bg-yellow-500 text-amber-50 rounded hover:bg-yellow-600 mt-6"
                     disabled={isLoading}
                 >
-                    <LockClosedIcon className="w-5 h-5 text-white"/>
+                    <LockClosedIcon className="w-5 h-5 text-amber-50"/>
                     {isLoading ? "Updating..." : t('profile_change_pwd_btn')}
                 </button>
             </div>
