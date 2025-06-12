@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import {toast} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 import type {Role} from "../interfaces/Role.ts";
+import {getRoleColor, getRoleIcon} from "../utils/roleHelpers.tsx";
 import Loader from "../components/Loader.tsx";
 import {useAuth} from "../hooks/useAuth.ts";
 import {userService} from "../services/userService.ts";
@@ -160,11 +161,12 @@ const Profile: React.FC = () => {
     };
 
     const UserRolesDisplay = ({roles}: { roles: Role[] }) => (
-        <div>
+        <div className="flex items-center justify-center gap-2 ">
             {roles.map(role => (
                 <span key={role.id}
-                      className="inline-block bg-gray-300 dark:text-amber-50 px-2 py-1 rounded mr-2 font-semibold">
-                    {role.name.replace('ROLE_', '')} {/* display just USER or ADMIN */}
+                      className={`${getRoleColor(role.name)}`}>
+                    {role.name.replace("ROLE_", "")}
+                    {getRoleIcon(role.name)}
                 </span>
             ))}
         </div>

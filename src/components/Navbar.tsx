@@ -13,10 +13,10 @@ import {
     XMarkIcon,
     MoonIcon,
     SunIcon,
-    ShieldCheckIcon
 } from "@heroicons/react/24/outline";
 import ConfirmationDialog from "./ConfirmationDialog";
 import {useDarkMode} from '../hooks/useDarkMode.ts';
+import { getRoleIcon } from "../utils/roleHelpers.tsx";
 
 interface NavbarProps {
     isAdminDrawerOpen: boolean;
@@ -94,8 +94,8 @@ const Navbar: React.FC<NavbarProps> = ({isAdminDrawerOpen, setAdminDrawerOpen}) 
                                                     className="flex items-center px-3 py-1 bg-red-600 text-amber-50 hover:bg-red-700 transition rounded-full uppercase text-sm font-semibold"
                                                     title="Toggle Admin Panel"
                                                 >
-                                                    <ShieldCheckIcon className="h-4 w-4 mr-1"/>
-                                                    Admin
+                                                    {getRoleIcon("admin")}
+                                                    {t("admin_title")}
                                                 </button>
                                             )}
                                         </span>

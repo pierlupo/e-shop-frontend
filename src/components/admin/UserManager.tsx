@@ -44,6 +44,7 @@ const UserManager: React.FC = () => {
     const [columnsDropdownOpen, setColumnsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const tableRef = useRef<HTMLTableSectionElement>(null);
+    const confirmationDialogRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -98,8 +99,8 @@ const UserManager: React.FC = () => {
     };
 
     const confirmDelete = async () => {
+        console.log("Confirm delete called with userId:", selectedUserId);
         if (selectedUserId == null) return;
-
         try {
             await userService.deleteUser(selectedUserId);
             setUsers((prev) => prev.filter((u) => u.id !== selectedUserId));
@@ -155,38 +156,40 @@ const UserManager: React.FC = () => {
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as Node;
-            if (dropdownRef.current && !dropdownRef.current.contains(target )
-            ) {
+            // Close column dropdown if needed
+            if (dropdownRef.current && !dropdownRef.current.contains(target)) {
                 setColumnsDropdownOpen(false);
             }
-            if (tableRef.current && !tableRef.current.contains(target)) {
+            // If dialog is open, don't unselect anything — we’re likely interacting with it
+            if (isDialogOpen) return;
+            // Check if clicked outside the table
+            const clickedOutsideTable = tableRef.current && !tableRef.current.contains(target);
+            if (clickedOutsideTable) {
                 setSelectedUserId(null);
             }
         }
         if (columnsDropdownOpen || selectedUserId !== null) {
             document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
         }
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [columnsDropdownOpen, selectedUserId]);
+    }, [columnsDropdownOpen, selectedUserId, isDialogOpen]);
 
     const columns = useMemo<ColumnDef<User>[]>(
         () => [
             { accessorKey: "id", header: "ID" },
-            { accessorKey: "firstname", header: "Firstname" },
-            { accessorKey: "lastname", header: "Lastname" },
+            { accessorKey: "firstname", header: t("signup_firstname_label") },
+            { accessorKey: "lastname", header: t("signup_lastname_label") },
             { accessorKey: "email", header: "Email" },
             {
                 accessorKey: "emailVerified",
-                header: "Email checked",
+                header: t("email_check"),
                 cell: ({ row }) => isEmailVerified(row.original.emailVerified),
             },
             {
                 accessorKey: "registrationDate",
-                header: "Registration date",
+                header: t("registration"),
                 cell: ({ row }) => {
                     const rawDate = row.original.registrationDate;
                     const date = new Date(rawDate);
@@ -204,7 +207,7 @@ const UserManager: React.FC = () => {
                 id: "roles",
                 header: "Roles",
                 cell: ({ row }) => (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex gap-2">
                         {row.original.roles.map((role: Role) => {
                             const roleName = role.name.replace("ROLE_", "");
                             return (
@@ -245,7 +248,7 @@ const UserManager: React.FC = () => {
                 ),
             },
         ],
-        [isEmailVerified]
+        [isEmailVerified, t]
     );
 
     const [pagination, setPagination] = useState({
@@ -452,6 +455,7 @@ const UserManager: React.FC = () => {
                         }
                         onConfirm={confirmDelete}
                         onCancel={() => setIsDialogOpen(false)}
+                        dialogRef={confirmationDialogRef}
                     />
                     {isEditDialogOpen && editingUser && (
                         <EditUserDialog
