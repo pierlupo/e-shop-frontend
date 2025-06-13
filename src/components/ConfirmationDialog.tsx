@@ -25,7 +25,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 
     return (
         <Transition show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={onCancel}>
+            <Dialog as="div" className="relative z-[100]" onClose={onCancel}>
                 {/* Overlay */}
                 <TransitionChild
                     as={Fragment}

@@ -35,6 +35,7 @@ import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { userService } from "../../services/userService";
 
 const UserManager: React.FC = () => {
+
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -340,42 +341,50 @@ const UserManager: React.FC = () => {
                                 <UserPlusIcon className="w-5 h-5" />
                                 {t("admin_create_user_title")}
                             </button>
-                        <div className="relative" ref={dropdownRef}>
-                            <button
-                                onClick={() => setColumnsDropdownOpen((open) => !open)}
-                                className="flex items-center gap-2 px-5 py-1.5 text-amber-50 bg-blue-600 rounded-md hover:bg-blue-700 dark:text-amber-50 dark:bg-gray-500 border-gray-300 dark:border-gray-600 shadow-sm dark:hover:bg-gray-600 transition font-semibold"
-                                aria-expanded={columnsDropdownOpen}
-                                aria-haspopup="true"
-                                title="Toggle columns"
-                            >
-                                <ViewColumnsIcon className="w-5 h-5 dark:text-amber-50 dark:hover:bg-gray-700"  />
-                                {t("columns")}
-                            </button>
-                            {columnsDropdownOpen && (
-                                <div
-                                    className="absolute top-0 left-full ml-2 w-48 max-h-60 overflow-auto rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 shadow-lg p-3 animate-fade-slide-right z-10"
-                                    role="menu"
-                                    aria-orientation="vertical"
-                                    aria-labelledby="columns-menu"
+                            <div className="relative">
+                                <button
+                                    onClick={exportToCSV}
+                                    className="w-60 text-amber-50 bg-blue-600 px-5 py-1.5 rounded-md hover:bg-blue-700 transition font-semibold">
+                                    <ArrowDownTrayIcon className="w-5 h-5 absolute top-1/2 transform -translate-y-1/2  ml-3 dark:text-amber-50 dark:hover:bg-gray-700"  />
+                                    {t("export_csv_btn")}
+                                </button>
+                            </div>
+                            <div className="relative" ref={dropdownRef}>
+                                <button
+                                    onClick={() => setColumnsDropdownOpen((open) => !open)}
+                                    className="flex items-center gap-2 px-5 py-1.5 text-amber-50 bg-blue-600 rounded-md hover:bg-blue-700 dark:text-amber-50 dark:bg-gray-500 border-gray-300 dark:border-gray-600 shadow-sm dark:hover:bg-gray-600 transition font-semibold"
+                                    aria-expanded={columnsDropdownOpen}
+                                    aria-haspopup="true"
+                                    title="Toggle columns"
                                 >
-                                    {table.getAllLeafColumns().map((column) => (
-                                        <label
-                                            key={column.id}
-                                            className="flex items-center cursor-pointer select-none text-sm text-gray-700 dark:text-gray-200 mb-1 last:mb-0"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                checked={column.getIsVisible()}
-                                                onChange={column.getToggleVisibilityHandler()}
-                                                className="mr-2 rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-gray-200 dark:focus:ring-gray-500"
-                                            />
-                                            {column.id}
-                                        </label>
-                                    ))}
-                                </div>
-                            )}
+                                    <ViewColumnsIcon className="w-5 h-5 dark:text-amber-50 dark:hover:bg-gray-700"  />
+                                    {t("columns")}
+                                </button>
+                                {columnsDropdownOpen && (
+                                    <div
+                                        className="absolute top-0 left-full ml-2 w-48 max-h-60 overflow-auto rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-600 shadow-lg p-3 animate-fade-slide-right z-10"
+                                        role="menu"
+                                        aria-orientation="vertical"
+                                        aria-labelledby="columns-menu"
+                                    >
+                                        {table.getAllLeafColumns().map((column) => (
+                                            <label
+                                                key={column.id}
+                                                className="flex items-center cursor-pointer select-none text-sm text-gray-700 dark:text-gray-200 mb-1 last:mb-0"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={column.getIsVisible()}
+                                                    onChange={column.getToggleVisibilityHandler()}
+                                                    className="mr-2 rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-gray-200 dark:focus:ring-gray-500"
+                                                />
+                                                {column.id}
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
                     </div>
                     {/* Table */}
                     <div className="overflow-x-auto rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-600">
@@ -456,14 +465,6 @@ const UserManager: React.FC = () => {
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div className="relative">
-                    <button
-                        onClick={exportToCSV}
-                        className="w-60 text-amber-50 bg-blue-600 py-2 rounded-md hover:bg-blue-700 transition mb-4 mx-auto block">
-                        <ArrowDownTrayIcon className="w-5 h-5 absolute top-1/2 transform -translate-y-1/2  ml-3 dark:text-amber-50 dark:hover:bg-gray-700"  />
-                        {t("export_csv_btn")}
-                    </button>
                     </div>
                     <ConfirmationDialog
                         isOpen={isDialogOpen}
