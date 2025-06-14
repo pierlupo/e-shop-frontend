@@ -291,7 +291,7 @@ const UserManager: React.FC = () => {
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        manualPagination: true,
+        manualPagination: true
     });
 
     const exportToCSV = () => {

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {toast} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
+import {categoryService} from "../../services/categoryService.ts";
+import type {Category} from "../../interfaces/Category.ts";
 import type {ProductCreateRequest} from "../../interfaces/ProductCreateRequest.ts";
 import type {ProductUpdateRequest} from "../../interfaces/ProductUpdateRequest.ts";
 import ModalPortal from "../../components/ModalPortal";
@@ -17,6 +20,32 @@ export default function AdminProductDialog({ product, onClose, onSaved }: AdminP
 
     const [form, setForm] = useState<ProductCreateRequest>({ productName: "", brand:"", price:0, inventory:0, description:"", categoryId:0 });
     const [confirm, setConfirm] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const {t} = useTranslation();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                await fetchCategories();
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const res = await categoryService.getAllCategories();
+            setCategories(res);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to load categories");
+        } finally {
+            setLoading(false);
+        }
+    }
+
 
     useEffect(() => {
         if (product) {
@@ -31,9 +60,14 @@ export default function AdminProductDialog({ product, onClose, onSaved }: AdminP
         }
     }, [product]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
         const { name, value } = e.target;
-        setForm(f => ({ ...f, [name]: name==="price"||name==="inventory"? Number(value) : value }));
+        setForm(f => ({
+            ...f,
+            [name]: name === "price" || name === "inventory" || name === "categoryId" ? Number(value) : value,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -62,82 +96,113 @@ export default function AdminProductDialog({ product, onClose, onSaved }: AdminP
         <ModalPortal>
             <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
                  onClick={onClose}>
+                {loading ? (
+                    <div
+                        className="bg-gray-100 dark:bg-gray-700 p-6 rounded shadow-md w-96"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="animate-pulse space-y-4">
+                            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/3"></div>
+                            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
+                            <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+                        </div>
+                    </div>
+                ) : (
                 <form onSubmit={handleSubmit}
                       className="bg-gray-100 dark:bg-gray-700 p-6 rounded shadow-md w-96"
                       onClick={(e) => e.stopPropagation()}>
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Product Name</label>
+                            <label className="block mb-1 font-medium dark:text-amber-50">Product Name</label>
                             <input
                                 type="text"
                                 name="productName"
                                 value={form.productName}
                                 onChange={handleChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Brand</label>
+                            <label className="block mb-1 font-medium dark:text-amber-50">Brand</label>
                             <input
                                 type="text"
                                 name="brand"
                                 value={form.brand}
                                 onChange={handleChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Price</label>
+                            <label className="block mb-1 font-medium dark:text-amber-50">Price</label>
                             <input
                                 type="number"
                                 name="price"
                                 value={form.price}
                                 onChange={handleChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Inventory</label>
+                            <label className="block mb-1 font-medium dark:text-amber-50">Inventory</label>
                             <input
                                 type="number"
                                 name="inventory"
                                 value={form.inventory}
                                 onChange={handleChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
+                            <label className="block mb-1 font-medium dark:text-amber-50">Description</label>
                             <textarea
                                 name="description"
                                 value={form.description}
                                 onChange={handleChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-amber-50 dark:placeholder-gray-400"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Category ID</label>
-                            <input
-                                type="number"
+                            <label className="block mb-1 font-medium dark:text-amber-50">Categories</label>
+                            <select
                                 name="categoryId"
                                 value={form.categoryId}
                                 onChange={handleChange}
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                            />
+                            >
+                                <option value="">Select a category</option>
+                                {categories.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-blue-600 text-amber-50 rounded hover:bg-blue-700"
-                    >
-                        Save
-                    </button>
+                    <div className="mt-4 flex justify-end space-x-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="px-4 py-2 rounded font-medium border border-gray-300
+                                                bg-gray-100 text-gray-800 hover:bg-gray-200
+                                                focus:ring-2 focus:ring-gray-400
+                                                dark:bg-gray-600 dark:text-amber-50 dark:hover:bg-gray-700"
+                        >
+                            {t("cancel_btn")}
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-600 text-amber-50 rounded hover:bg-blue-700"
+                        >
+                            {t("profile_save_changes_btn")}
+                        </button>
+                    </div>
                 </form>
+                )}
             </div>
             {confirm && (
                 <ModalPortal>

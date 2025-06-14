@@ -12,7 +12,7 @@ import {
     flexRender,
     type ColumnDef,
     type SortingState,
-    type PaginationState,
+    getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
     TrashIcon,
@@ -29,15 +29,16 @@ import {
 
 const ProductManager: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [selected, setSelected] = useState<Product | null>(null);
+    const [sorting, setSorting] = useState<SortingState>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selected, setSelected] = useState<Product | null>(null);
     const [columnsDropdownOpen, setColumnsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const tableRef = useRef<HTMLTableSectionElement>(null)
     const [globalFilter, setGlobalFilter] = useState("");
     const [loading, setLoading] = useState<boolean>(true);
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 });
+
 
     useEffect(() => {
         (async () => {
@@ -84,6 +85,27 @@ const ProductManager: React.FC = () => {
             .catch(() => toast.error("Delete failed"))
             .finally(() => setIsDeleteOpen(false));
     };
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as Node;
+            // Close column dropdown if needed
+            if (dropdownRef.current && !dropdownRef.current.contains(target)) {
+                setColumnsDropdownOpen(false);
+            }
+            if (isDialogOpen) return;
+            const clickedOutsideTable = tableRef.current && !tableRef.current.contains(target);
+            if (clickedOutsideTable) {
+                setSelected(null);
+            }
+        }
+        if (columnsDropdownOpen || selected !== null) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [columnsDropdownOpen, selected, isDialogOpen]);
 
     const columns = useMemo<ColumnDef<Product>[]>(
         () => [
@@ -135,6 +157,34 @@ const ProductManager: React.FC = () => {
         []
     );
 
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 25,
+    });
+
+    const paginatedData = useMemo(() => {
+        const start = pagination.pageIndex * pagination.pageSize;
+        return products.slice(start, start + pagination.pageSize);
+    }, [products, pagination]);
+
+    const table = useReactTable({
+        data: paginatedData,
+        columns,
+        pageCount: Math.ceil(products.length / pagination.pageSize),
+        onSortingChange: setSorting,
+        state: {
+            pagination,
+            globalFilter,
+            sorting,
+        },
+        onPaginationChange: setPagination,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        manualPagination: true
+    });
+
     const exportToCSV = () => {
         const csvContent = [
             ["ID", "productName", "brand", "price", "category","inventory"].join(","),
@@ -151,16 +201,6 @@ const ProductManager: React.FC = () => {
         URL.revokeObjectURL(url);
     };
 
-    const table = useReactTable({
-        data: products,
-        columns,
-        state: { sorting, globalFilter, pagination },
-        onSortingChange: setSorting,
-        onPaginationChange: setPagination,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-    });
     return (
         <div className="px-4 py-12 max-w-7xl mx-auto space-y-8">
             {loading ? (
@@ -278,7 +318,7 @@ const ProductManager: React.FC = () => {
                             ))}
                             </thead>
 
-                            <tbody className="bg-gray-100 dark:bg-gray-600 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody ref={tableRef} className="bg-gray-100 dark:bg-gray-600 divide-y divide-gray-200 dark:divide-gray-700">
                             {table.getRowModel().rows.map((row) => (
                                 <tr
                                     key={row.id}
